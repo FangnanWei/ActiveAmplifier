@@ -1,0 +1,52 @@
+#Generating source browse information for project Project
+
+
+#Abbreviations
+cc = C$:\Program$ Files$ (x86)\IAR$ Systems\Embedded$ Workbench$ 8.3\common\bin\SourceIndexer.exe
+ll = C$:\Program$ Files$ (x86)\IAR$ Systems\Embedded$ Workbench$ 8.3\common\bin\PbdLink.exe
+bd = C$:\Program$ Files$ (x86)\IAR$ Systems\Embedded$ Workbench$ 8.3\common\bin\makeBrowseData.exe
+
+
+
+#Rules
+rule index
+  depfile = $out.dep
+  command = $cc -out=$out -f $in
+rule link
+  command = $ll -M $out $in
+rule browsedata
+  command = $bd $in -output  $out
+
+
+
+#Build steps
+build stm8s_beep.pbi : index stm8s_beep.xcl
+build stm8s_clk.pbi : index stm8s_clk.xcl
+build stm8s_exti.pbi : index stm8s_exti.xcl
+build stm8s_gpio.pbi : index stm8s_gpio.xcl
+build stm8s_i2c.pbi : index stm8s_i2c.xcl
+build stm8s_itc.pbi : index stm8s_itc.xcl
+build stm8s_iwdg.pbi : index stm8s_iwdg.xcl
+build stm8s_rst.pbi : index stm8s_rst.xcl
+build stm8s_tim3.pbi : index stm8s_tim3.xcl
+build app.pbi : index app.xcl
+build app_beep.pbi : index app_beep.xcl
+build app_clk.pbi : index app_clk.xcl
+build app_gpio.pbi : index app_gpio.xcl
+build app_i2c.pbi : index app_i2c.xcl
+build app_iwdg.pbi : index app_iwdg.xcl
+build app_menu.pbi : index app_menu.xcl
+build app_tim.pbi : index app_tim.xcl
+build character_matrix.pbi : index character_matrix.xcl
+build CppTest.pbi : index CppTest.xcl
+build main.pbi : index main.xcl
+build stm8s_it.pbi : index stm8s_it.xcl
+build Project_part0.pbi : link stm8s_beep.pbi stm8s_clk.pbi stm8s_exti.pbi stm8s_gpio.pbi stm8s_i2c.pbi
+build Project_part1.pbi : link stm8s_itc.pbi stm8s_iwdg.pbi stm8s_rst.pbi stm8s_tim3.pbi app.pbi
+build Project_part2.pbi : link app_beep.pbi app_clk.pbi app_gpio.pbi app_i2c.pbi app_iwdg.pbi
+build Project_part3.pbi : link app_menu.pbi app_tim.pbi character_matrix.pbi CppTest.pbi main.pbi
+build Project_part4.pbi : link stm8s_it.pbi
+build Project.pbd : link Project_part0.pbi Project_part1.pbi Project_part2.pbi Project_part3.pbi Project_part4.pbi
+build Project.pbw : browsedata Project.pbd
+
+

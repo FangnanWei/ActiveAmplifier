@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "F:\Project\DPA\SDi-2000\Code\SDi_2000_FrontPanel_editing\Project\EWSTM8\settings\Project.Debug.general.xcl" --backend -f "F:\Project\DPA\SDi-2000\Code\SDi_2000_FrontPanel_editing\Project\EWSTM8\settings\Project.Debug.driver.xcl" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\common\bin\cspybat" -f "C:\Users\wfn88\Desktop\GitHub\ActiveAmplifier\SDi_2000_FrontPanel_editing\Project\EWSTM8\settings\Project.Debug.general.xcl" --backend -f "C:\Users\wfn88\Desktop\GitHub\ActiveAmplifier\SDi_2000_FrontPanel_editing\Project\EWSTM8\settings\Project.Debug.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "F:\Project\DPA\SDi-2000\Code\SDi_2000_FrontPanel_editing\Project\EWSTM8\settings\Project.Debug.general.xcl" "--debug_file=%~1" --backend -f "F:\Project\DPA\SDi-2000\Code\SDi_2000_FrontPanel_editing\Project\EWSTM8\settings\Project.Debug.driver.xcl" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\common\bin\cspybat" -f "C:\Users\wfn88\Desktop\GitHub\ActiveAmplifier\SDi_2000_FrontPanel_editing\Project\EWSTM8\settings\Project.Debug.general.xcl" "--debug_file=%~1" --backend -f "C:\Users\wfn88\Desktop\GitHub\ActiveAmplifier\SDi_2000_FrontPanel_editing\Project\EWSTM8\settings\Project.Debug.driver.xcl" 
 
 @echo off 
 :end

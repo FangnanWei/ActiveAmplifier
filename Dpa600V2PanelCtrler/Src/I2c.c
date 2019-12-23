@@ -65,7 +65,7 @@ void I2C_WriteByte(unsigned char data)
     SetSDA_Output();
 }
 
-#if 0
+#if 1
 /* 执行前SCL = ?;SDA = ?
     执行后SCL = 0; SDA = 0;*/
 void I2C_Restart()

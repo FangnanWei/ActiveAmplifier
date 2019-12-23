@@ -62,9 +62,6 @@
         <GraphEnabled>0</GraphEnabled>
         <ShowTimeLog>1</ShowTimeLog>
     </DataSample>
-    <Breakpoints>
-        <Count>0</Count>
-    </Breakpoints>
     <LogFile>
         <LoggingEnabled>_ 0</LoggingEnabled>
         <LogFile>_ ""</LogFile>
@@ -74,6 +71,9 @@
         <LoggingEnabled>_ 0</LoggingEnabled>
         <LogFile>_ ""</LogFile>
     </TermIOLog>
+    <Breakpoints>
+        <Count>0</Count>
+    </Breakpoints>
     <Aliases>
         <A0>_ "F:\Dpa600V2\Code\SDi_2000_FrontPanel\Project\src\main.c" ""</A0>
         <A1>_ "F:\Dpa600V2\Code\SDi_2000_FrontPanel\STM8S_StdPeriph_Driver\src\stm8s_i2c.c" ""</A1>

@@ -8,6 +8,8 @@
 #include "app_iwdg.h"
 #include "app.h"
 
+#include "stdlib.h"
+
 const uint16_t SOFT_VERSION = 1009;//版本号  如果软件版本升级 eeprom会相应的自动擦掉一次
 extern uint32_t g_time_cnt;
 extern struct device_global_prmt g_dev;//涓嶈兘鏄剧ず涓枃鍚楋紝涓枃鏈夐棶棰橈紝濂藉儚鏄病鏈夊姙娉曚簡
@@ -206,6 +208,10 @@ void main(void)
 	/** 初始化iwdg  暂时不用  可用于重启或者复位*/
 	IWDG_Config(&hIWDG);
 	hIWDG.Inited = TRUE;
+        
+        int *mallocInt = (int *)malloc(sizeof(int) * 10);
+        
+        
 	while (1)
 	{
 		Key_Scan(&hKeys.PowerSwit);

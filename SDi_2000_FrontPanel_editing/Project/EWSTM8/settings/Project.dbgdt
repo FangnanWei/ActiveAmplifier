@@ -783,7 +783,7 @@
                     <item>err_str_index</item>
                     <item>hDisplay</item>
                     <item>hIWDG</item>
-                    <item></item>
+                    <item />
                 </expressions>
                 <col-names>
                     <item>Expression</item>

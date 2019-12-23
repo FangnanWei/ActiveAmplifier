@@ -1,0 +1,26 @@
+app_i2c.pbi: \
+  C:\Users\wfn88\Desktop\GitHub\ActiveAmplifier\SDi_2000_FrontPanel_editing\Project\EWSTM8\..\inc\app_beep.h \
+  C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\stm8\inc\c\ycheck.h \
+  C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\stm8\inc\c\ysizet.h \
+  C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\stm8\inc\c\DLib_Threads.h \
+  C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\stm8\inc\c\yvals.h \
+  C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\stm8\inc\c\xencoding_limits.h \
+  C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\stm8\inc\c\DLib_Product.h \
+  C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\stm8\inc\c\DLib_Defaults.h \
+  C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\stm8\inc\c\string.h \
+  C:\Users\wfn88\Desktop\GitHub\ActiveAmplifier\SDi_2000_FrontPanel_editing\Project\EWSTM8\..\inc\app_tim.h \
+  C:\Users\wfn88\Desktop\GitHub\ActiveAmplifier\SDi_2000_FrontPanel_editing\Project\EWSTM8\..\inc\app_gpio.h \
+  C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\stm8\inc\c\intrinsics.h \
+  C:\Users\wfn88\Desktop\GitHub\ActiveAmplifier\SDi_2000_FrontPanel_editing\Project\EWSTM8\..\..\STM8S_StdPeriph_Driver\inc\stm8s.h \
+  C:\Users\wfn88\Desktop\GitHub\ActiveAmplifier\SDi_2000_FrontPanel_editing\Project\EWSTM8\..\..\STM8S_StdPeriph_Driver\inc\stm8s_tim3.h \
+  C:\Users\wfn88\Desktop\GitHub\ActiveAmplifier\SDi_2000_FrontPanel_editing\Project\EWSTM8\..\..\STM8S_StdPeriph_Driver\inc\stm8s_rst.h \
+  C:\Users\wfn88\Desktop\GitHub\ActiveAmplifier\SDi_2000_FrontPanel_editing\Project\EWSTM8\..\..\STM8S_StdPeriph_Driver\inc\stm8s_iwdg.h \
+  C:\Users\wfn88\Desktop\GitHub\ActiveAmplifier\SDi_2000_FrontPanel_editing\Project\EWSTM8\..\..\STM8S_StdPeriph_Driver\inc\stm8s_itc.h \
+  C:\Users\wfn88\Desktop\GitHub\ActiveAmplifier\SDi_2000_FrontPanel_editing\Project\EWSTM8\..\..\STM8S_StdPeriph_Driver\inc\stm8s_i2c.h \
+  C:\Users\wfn88\Desktop\GitHub\ActiveAmplifier\SDi_2000_FrontPanel_editing\Project\EWSTM8\..\..\STM8S_StdPeriph_Driver\inc\stm8s_gpio.h \
+  C:\Users\wfn88\Desktop\GitHub\ActiveAmplifier\SDi_2000_FrontPanel_editing\Project\EWSTM8\..\..\STM8S_StdPeriph_Driver\inc\stm8s_exti.h \
+  C:\Users\wfn88\Desktop\GitHub\ActiveAmplifier\SDi_2000_FrontPanel_editing\Project\EWSTM8\..\..\STM8S_StdPeriph_Driver\inc\stm8s_clk.h \
+  C:\Users\wfn88\Desktop\GitHub\ActiveAmplifier\SDi_2000_FrontPanel_editing\Project\EWSTM8\..\..\STM8S_StdPeriph_Driver\inc\stm8s_beep.h \
+  C:\Users\wfn88\Desktop\GitHub\ActiveAmplifier\SDi_2000_FrontPanel_editing\Project\EWSTM8\..\inc\stm8s_conf.h \
+  C:\Users\wfn88\Desktop\GitHub\ActiveAmplifier\SDi_2000_FrontPanel_editing\Project\EWSTM8\..\inc\app_i2c.h \
+  C:\Users\wfn88\Desktop\GitHub\ActiveAmplifier\SDi_2000_FrontPanel_editing\Project\src\app_i2c.c
