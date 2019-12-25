@@ -1,4 +1,5 @@
 #include "Gpio.h"
+#include "Sys.h"
 
 void Gpio::Init() {
   GPIO_Init(bank_, pin_, mode_);
@@ -25,7 +26,7 @@ void Gpio::Enable() {
 
 void Gpio::EnableForMs(uint32_t ms) {
   Enable();
-  //Todo ÑÓ³Ùms
+  Sys::DelayMs(ms);
   Disable();
 }
 
@@ -40,7 +41,7 @@ void Gpio::Disable() {
 
 void Gpio::DisableForMs(uint32_t ms) {
   Disable();
-  //Todo ÑÓ³Ùms
+  Sys::DelayMs(ms);
   Enable();
 }
 

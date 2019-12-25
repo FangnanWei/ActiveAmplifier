@@ -22,4 +22,6 @@ Gpio.pbi: \
   C:\Users\wfn88\Desktop\Project\ActiveAmplifier\FrontPanel\Prj-IAR\..\STM8S_StdPeriph_Driver\inc\stm8s_tim4.h \
   C:\Users\wfn88\Desktop\Project\ActiveAmplifier\FrontPanel\Prj-IAR\..\STM8S_StdPeriph_Driver\inc\stm8s_uart2.h \
   C:\Users\wfn88\Desktop\Project\ActiveAmplifier\FrontPanel\Prj-IAR\..\STM8S_StdPeriph_Driver\inc\stm8s_wwdg.h \
-  C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\stm8\inc\c\intrinsics.h
+  C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\stm8\inc\c\intrinsics.h \
+  C:\Users\wfn88\Desktop\Project\ActiveAmplifier\FrontPanel\Prj-IAR\..\inc\Sys.h \
+  C:\Users\wfn88\Desktop\Project\ActiveAmplifier\FrontPanel\Prj-IAR\..\inc/stm8s_it.h

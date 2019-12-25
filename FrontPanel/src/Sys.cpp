@@ -3,8 +3,8 @@
 #define MY_I2C 
 
 const uint32_t TimeCounterPeriod = HSE_VALUE/1000;
-const uint32_t I2cSpeed = 100000;//100K
-const uint16_t I2cOwnAddress = 0xAA;
+const uint32_t I2cSpeed = 200000;//100K
+const uint16_t I2cOwnAddress = 0xA0;
 
 static void ClockInit() { 
     CLK_DeInit();
@@ -44,17 +44,10 @@ static void BeepInit() {
 
 
 static void I2cCtrlerInit() {
-#if 1  
   /* I2C Peripheral Enable */
   I2C_Cmd( ENABLE);
     /* I2C configuration after enabling it */
   I2C_Init(I2cSpeed, I2cOwnAddress, I2C_DUTYCYCLE_2, I2C_ACK_CURR, I2C_ADDMODE_7BIT, CLK_GetClockFreq() / 1000000);
-  
-  I2C_ITConfig(I2C_IT_ERR, ENABLE);
-#else
-  GPIO_Init(GPIOB, GPIO_PIN_4, GPIO_MODE_OUT_PP_HIGH_SLOW); //SCL
-  GPIO_Init(GPIOB, GPIO_PIN_5, GPIO_MODE_OUT_PP_HIGH_SLOW); //SDA
-#endif  
 }
 
 void Sys::CpuInit() {

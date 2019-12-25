@@ -36,9 +36,34 @@ extern "C" {
 #include "I2c.h"
 /* Private defines -----------------------------------------------------------*/
 const uint8_t EepronAddress = 0xA8;
+const uint16_t EepronPageSize = 64;
+const uint16_t EepronPages = 512;
+/*
+   24C256资料
+   容量：32768Byte
+         256Kbit
+         32KByte
+         512Page
+         64Byte per Page     
+*/
+
 GpioParam GpioLed01Param(GPIOC, GPIO_PIN_4, GPIO_MODE_OUT_PP_LOW_FAST, false);
 GpioParam GpioLed02Param(GPIOC, GPIO_PIN_3, GPIO_MODE_OUT_PP_LOW_FAST, false);
 GpioParam GpioLed03Param(GPIOC, GPIO_PIN_2, GPIO_MODE_OUT_PP_LOW_FAST, false);
+
+uint8_t Tx1_Buffer[] = " STM8S I2C Firmware Library EEPROM driver example: \
+                        buffer 1 transfer into address sEE_WRITE_ADDRESS1  \
+                        Example Description \
+                        This firmware provides a basic example of how to use the I2C firmware library and\
+                        an associate I2C EEPROM driver to communicate with an I2C EEPROM device (here the\
+                        example is interfacing with M24C64 EEPROM)\
+                          \
+                        I2C peripheral is configured in Master transmitter during write operation and in\
+                        Master receiver during read operation from I2C EEPROM. \
+                          \
+                        I2C peripheral speed is set to 200kHz and can be configured by \
+                        modifying the relative define in stm8s_eval_i2c_ee.h file.\
+                         ";
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -57,23 +82,25 @@ void main(void)
   Gpio *led03_ = new Gpio(GpioLed03Param);
   led03_->Init();
   
-  led01_->Disable();
-  led01_->Enable();
-  Sys::BeepRingForMs(100);
-  //Sys::DelaySecond(10);
-  led01_->Disable();
+  Eeprom *eeprom = new Eeprom(EepronAddress, true, EepronPageSize, EepronPageSize * EepronPages);
   
-  //I2cCtrl::Init();
+  int i = 0;
+  eeprom->Write(0xe4, Tx1_Buffer, sizeof(Tx1_Buffer));
   
-  Eeprom *eeprom = new Eeprom(EepronAddress);
+  uint8_t tempBuf[sizeof(Tx1_Buffer)];
+  Sys::DelayMs(2);//写完必须出来再等两毫秒，内部等还不行！！
+  eeprom->Read(0xe4, tempBuf, sizeof(Tx1_Buffer));
   
-  uint8_t tempBuf[] = {0, 1, 2, 3, 4, 5, 6, 7};
-  
-  eeprom->Write(0x00, tempBuf, sizeof(tempBuf));
-  
-  eeprom->Read(0x00, tempBuf, sizeof(tempBuf));
-  
+  for (i = 0; i < sizeof(Tx1_Buffer); i++) {
+    if (tempBuf[i] != Tx1_Buffer[i]) {
+        //while(1);
+        i++;
+        continue;
+        
+    }
+  }
   /* Infinite loop */
+  Sys::BeepRingForMs(100);
   while (1)
   {
     led01_->Enable();

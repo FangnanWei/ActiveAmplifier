@@ -1,325 +1,254 @@
 #include "I2c.h"
 #include "Sys.h"
 
-I2c::I2c(uint8_t slaveAddress) {
+const uint32_t I2C_FLAG_TIMEOUT = 0x1000;
+const uint32_t I2C_LONG_TIMEOUT = 10 * I2C_FLAG_TIMEOUT;
+const uint32_t MAX_TRIALS_NUMBER = 150;
+static uint32_t I2CTimeout = 0;
+
+extern "C" {
+static ErrorStatus I2cErrorCallback(void)
+{
+    I2C_GenerateSTOP(ENABLE);
+    return ERROR;
+}
+}
+
+I2c::I2c(uint8_t slaveAddress, bool useWordRegAddr) {
   slaveAddress_ = slaveAddress;
+  useWordRegAddr_ = useWordRegAddr;
 }
 
-void I2c::Receive(uint8_t* pBuffer, uint16_t readAddr, uint16_t numByteToRead) {
-#if 0
-  uint16_t i = 0;
+ErrorStatus I2c::Send(uint8_t* pBuffer, uint16_t writeAddr, uint16_t numByteToWrite) {
 
-  I2cCtrl::Start();
-  I2cCtrl::WriteByte(slaveAddress_);
-  I2cCtrl::WriteByte(readAddr);
-  I2cCtrl::Restart();
-  I2cCtrl::WriteByte(slaveAddress_ + 1);
-
-  for (i = 0; i < numByteToRead; i++)
-  {
-      pBuffer[i] = I2cCtrl::ReadByte(i == (numByteToRead - 1));
-  }
-  I2cCtrl::Stop();
-  
-#else  
-  /* While the bus is busy */
-  while(I2C_GetFlagStatus( I2C_FLAG_BUSBUSY))
-  {
-    ;//TimeOut
-  }
-
-  /* Send START condition */
-  I2C_GenerateSTART(ENABLE);
-
-  /* Test on EV5 and clear it (cleared by reading SR1 then writing to DR) */
-  while(!I2C_CheckEvent( I2C_EVENT_MASTER_MODE_SELECT))
-  {
-    ;//TimeOut
-  }
-
-  /* Send EEPROM address for write */
-  I2C_Send7bitAddress(slaveAddress_, I2C_DIRECTION_TX);
-
-  /* Test on EV6 and clear it */
-  while(!I2C_CheckEvent( I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
-  {
-    ;//TimeOut
-  }
-
-  /* Send the EEPROM's internal address to read from: MSB of the address first */
-  I2C_SendData( readAddr);
-
-  /* Test on EV8 and clear it */
-  while(!I2C_CheckEvent( I2C_EVENT_MASTER_BYTE_TRANSMITTED))
-  {
-    ;//TimeOut
-  }
-
-  //是否需要？？再判断
-  /* Test on EV8 and clear it */
-  while(I2C_GetFlagStatus(I2C_FLAG_TRANSFERFINISHED) == RESET)
-  {
-    ;//TimeOut
-  }
-
-  /* Send START condition a second time */
-  I2C_GenerateSTART( ENABLE);
-
-  /* Test on EV5 and clear it (cleared by reading SR1 then writing to DR) */
-  while(!I2C_CheckEvent( I2C_EVENT_MASTER_MODE_SELECT))
-  {
-    ;//TimeOut
-  }
-
-  /* Send EEPROM address for read */
-  I2C_Send7bitAddress(slaveAddress_, I2C_DIRECTION_RX);
-
-  /* Read data from first byte until byte N-3 */
-  if (numByteToRead> 3)
+    I2CTimeout = I2C_LONG_TIMEOUT;
+    while(I2C_GetFlagStatus(I2C_FLAG_BUSBUSY))
     {
-      /* Poll on BTF */
-      while (I2C_GetFlagStatus( I2C_FLAG_TRANSFERFINISHED) == RESET)
-      {
-        ;//TimeOut
-      }
-
-      /* Read a byte from the EEPROM */
-      *pBuffer = I2C_ReceiveData();
-
-      /* Point to the next location where the byte read will be saved */
-      *pBuffer++;
-
-      /* Decrement the read bytes counter */
-      numByteToRead--;
+        if((I2CTimeout--) == 0)
+            return I2cErrorCallback();
     }
 
-  /*  Remains three data for read: data N-2, data N-1, Data N */
-  /* Three Bytes Master Reception procedure (POLLING) ------------------------*/
-  if (numByteToRead == 3)
-  {
-    /* Data N-2 in DR and data N -1 in shift register */
-    /* Poll on BTF */
-      while (I2C_GetFlagStatus( I2C_FLAG_TRANSFERFINISHED) == RESET)
-      {
-        ;//TimeOut
-      }
-
-      /* Clear ACK */
-      I2C_AcknowledgeConfig(I2C_ACK_NONE);
-
-      /* Call User callback for critical section start (should typically disable interrupts) */
-      //sEE_EnterCriticalSection_UserCallback();
-      enableInterrupts();
-
-      /* Read Data N-2 */
-      *pBuffer = I2C_ReceiveData();
-
-      /* Point to the next location where the byte read will be saved */
-      *pBuffer++;
-
-      /* Program the STOP */
-      I2C_GenerateSTOP(ENABLE);
-
-      /* Read DataN-1 */
-      *pBuffer = I2C_ReceiveData();
-
-       /* Call User callback for critical section end (should typically re-enable interrupts) */
-       //sEE_ExitCriticalSection_UserCallback();
-      disableInterrupts();
-
-      /* Point to the next location where the byte read will be saved */
-      *pBuffer++;
-
-      /* Poll on RxNE */
-      while (I2C_GetFlagStatus( I2C_FLAG_RXNOTEMPTY) == RESET)
-      {
-        ;//TimeOut
-      }
-      /* Read DataN */
-      *pBuffer = I2C_ReceiveData();
-
-      /* Reset the number of bytes to be read from the EEPROM */
-      numByteToRead = 0;
-
-    }
-
-  /* If number of data to be read is 2 */
-  /* Tow Bytes Master Reception procedure (POLLING) ---------------------------*/
-  if (numByteToRead == 2)
-  {
-    /* Enable acknowledgement on next byte (set POS and ACK bits)*/
-    I2C_AcknowledgeConfig(I2C_ACK_NEXT);
-
-    /* Wait on ADDR flag to be set (ADDR is still not cleared at this level */
-    while(I2C_GetFlagStatus( I2C_FLAG_ADDRESSSENTMATCHED) == RESET)
+    I2C_GenerateSTART( ENABLE);
+    I2CTimeout = I2C_FLAG_TIMEOUT;
+    while(!I2C_CheckEvent(I2C_EVENT_MASTER_MODE_SELECT))
     {
-      ;//TimeOut
+        if((I2CTimeout--) == 0)
+            return I2cErrorCallback();
     }
 
-    /* Clear ADDR register by reading SR1 then SR3 register (SR1 has already been read) */
-     (void)I2C->SR3;
-
-    /* Disable Acknowledgement */
-    I2C_AcknowledgeConfig(I2C_ACK_NONE);
-
-    /* Wait for BTF flag to be set */
-      while (I2C_GetFlagStatus( I2C_FLAG_TRANSFERFINISHED) == RESET)
-      {
-        ;//TimeOut
-      }
-
-    /* Call User callback for critical section start (should typically disable interrupts) */
-    //sEE_EnterCriticalSection_UserCallback();
-      enableInterrupts();
-
-    /* Program the STOP */
-      I2C_GenerateSTOP(ENABLE);
-
-    /* Read Data N-1 */
-      *pBuffer = I2C_ReceiveData();
-
-      /* Point to the next location where the byte read will be saved */
-      *pBuffer++;
-
-    /* Call User callback for critical section end (should typically re-enable interrupts) */
-       //sEE_ExitCriticalSection_UserCallback();
-      disableInterrupts();
-
-    /* Read Data N */
-      *pBuffer = I2C_ReceiveData();
-
-    /* Reset the number of bytes to be read from the EEPROM */
-      numByteToRead = 0;
-  }
-
-  /* If number of data to be read is 1 */
-  /* One Byte Master Reception procedure (POLLING) ---------------------------*/
-  if (numByteToRead < 2)
-  {
-    /* Wait on ADDR flag to be set (ADDR is still not cleared at this level */
-    while(I2C_GetFlagStatus( I2C_FLAG_ADDRESSSENTMATCHED) == RESET)
+    I2C_Send7bitAddress((uint8_t)slaveAddress_, I2C_DIRECTION_TX);
+    I2CTimeout = I2C_FLAG_TIMEOUT;
+    while(!I2C_CheckEvent( I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
     {
-      ;//TimeOut
+        if((I2CTimeout--) == 0)
+            return I2cErrorCallback();
     }
-
-    /* Disable Acknowledgement */
-    I2C_AcknowledgeConfig(I2C_ACK_NONE);
-
-    /* Call User callback for critical section start (should typically disable interrupts) */
-    //sEE_EnterCriticalSection_UserCallback();
-    enableInterrupts();
-
-    /* Clear ADDR register by reading SR1 then SR3 register (SR1 has already been read) */
-    (void)I2C->SR3;
-
-    /* Send STOP Condition */
-    I2C_GenerateSTOP( ENABLE);
-
-    /* Call User callback for critical section end (should typically re-enable interrupts) */
-    //sEE_ExitCriticalSection_UserCallback();
-    enableInterrupts();
+    if (!useWordRegAddr_) {
+        I2C_SendData((uint8_t)writeAddr);
+    }
+    else {
+        I2C_SendData( (uint8_t)((writeAddr & 0xFF00) >> 8));
+        I2CTimeout = I2C_FLAG_TIMEOUT;
+        while(!I2C_CheckEvent( I2C_EVENT_MASTER_BYTE_TRANSMITTED))
+        {
+            if((I2CTimeout--) == 0)
+                return I2cErrorCallback();
+        }
+        
+        I2C_SendData( (uint8_t)(writeAddr & 0x00FF));
+    }
     
-    /* Wait for the byte to be received */
-    while(I2C_GetFlagStatus( I2C_FLAG_RXNOTEMPTY) == RESET)
+    I2CTimeout = I2C_FLAG_TIMEOUT;
+    while(!I2C_CheckEvent( I2C_EVENT_MASTER_BYTE_TRANSMITTED))
     {
-      ;//TimeOut
+        if((I2CTimeout--) == 0)
+            return I2cErrorCallback();
     }
 
-    /* Read the byte received from the EEPROM */
-    *pBuffer = I2C_ReceiveData();
-
-    /* Decrement the read bytes counter */
-    numByteToRead--;
-
-    /* Wait to make sure that STOP control bit has been cleared */
-    while(I2C->CR2 & I2C_CR2_STOP)
+    while(numByteToWrite > 0)
     {
-      ;//TimeOut
+        I2C_SendData(*pBuffer);
+        I2CTimeout = I2C_LONG_TIMEOUT;
+
+        while(!I2C_CheckEvent( I2C_EVENT_MASTER_BYTE_TRANSMITTED))	 //可靠,速度变慢EV8_2
+        {
+            if((I2CTimeout--) == 0)
+                return I2cErrorCallback();
+        }
+        numByteToWrite--;
+        pBuffer++;
     }
 
-    /* Re-Enable Acknowledgement to be ready for another reception */
-    I2C_AcknowledgeConfig( I2C_ACK_CURR);
-  }
-#endif  
+    I2C_GenerateSTOP(ENABLE);
+    
+    return SUCCESS;
 }
 
-void I2c::Send(uint8_t* pBuffer, uint16_t writeAddr, uint16_t numByteToWrite) {
-#if 0    
-    uint16_t i = 0;
-
-    I2cCtrl::Start();
-    I2cCtrl::WriteByte(slaveAddress_);
-    I2cCtrl::WriteByte(writeAddr);
-    for (i = 0; i < numByteToWrite; i++)
+ErrorStatus I2c::Receive(uint8_t* pBuffer, uint16_t readAddr, uint16_t numByteToRead) {
+    
+    I2CTimeout = I2C_LONG_TIMEOUT;
+    while(I2C_GetFlagStatus(I2C_FLAG_BUSBUSY))
     {
-        I2cCtrl::WriteByte(pBuffer[i]);
+        if((I2CTimeout--) == 0) return I2cErrorCallback();
     }
-    I2cCtrl::Stop();
-#else
-  
-/* Set the pointer to the Number of data to be written.
-     User should check on this variable in order to know if the
-      data transfer has been completed or not. */
 
-  /* While the bus is busy */
+    I2C_AcknowledgeConfig(I2C_ACK_CURR);			//必须先使能一次ACK
+
+    I2C_GenerateSTART( ENABLE);
+    I2CTimeout = I2C_FLAG_TIMEOUT;
+    while(!I2C_CheckEvent(I2C_EVENT_MASTER_MODE_SELECT))
+    {
+        if((I2CTimeout--) == 0) return I2cErrorCallback();
+    }
+
+    I2C_Send7bitAddress(slaveAddress_, I2C_DIRECTION_TX);
+    I2CTimeout = I2C_FLAG_TIMEOUT;
+    while(!I2C_CheckEvent( I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
+    {
+        if((I2CTimeout--) == 0) return I2cErrorCallback();
+    }
+
+    //I2C_SendData((uint8_t)readAddr);
+    //I2CTimeout = I2C_FLAG_TIMEOUT;
+    //while(!I2C_CheckEvent( I2C_EVENT_MASTER_BYTE_TRANSMITTED))
+    //{
+    //   if((I2CTimeout--) == 0) return I2cErrorCallback();
+    //}
+
+    if (!useWordRegAddr_) {
+        I2C_SendData((uint8_t)readAddr);
+    }
+    else {
+        I2C_SendData( (uint8_t)((readAddr & 0xFF00) >> 8));
+        I2CTimeout = I2C_FLAG_TIMEOUT;
+        while(!I2C_CheckEvent( I2C_EVENT_MASTER_BYTE_TRANSMITTED))
+        {
+            if((I2CTimeout--) == 0)
+                return I2cErrorCallback();
+        }
+        
+        I2C_SendData( (uint8_t)(readAddr & 0x00FF));
+    }
+    
+    I2CTimeout = I2C_FLAG_TIMEOUT;
+    while(I2C_GetFlagStatus(I2C_FLAG_TRANSFERFINISHED) == RESET)
+    {
+        if((I2CTimeout--) == 0)
+            return I2cErrorCallback();
+    }  
+
+    I2C_GenerateSTART( ENABLE);
+    I2CTimeout = I2C_FLAG_TIMEOUT;
+    while(!I2C_CheckEvent(I2C_EVENT_MASTER_MODE_SELECT))
+    {
+        if((I2CTimeout--) == 0) return I2cErrorCallback();
+    }
+
+    I2C_Send7bitAddress(slaveAddress_, I2C_DIRECTION_RX);
+    I2CTimeout = I2C_FLAG_TIMEOUT;
+    while(!I2C_CheckEvent( I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED))
+    {
+        if((I2CTimeout--) == 0) return I2cErrorCallback();
+    }
+
+    while(numByteToRead > 1) {
+        I2CTimeout = I2C_FLAG_TIMEOUT;
+        while(!I2C_CheckEvent(I2C_EVENT_MASTER_BYTE_RECEIVED))
+        {
+            if((I2CTimeout--) == 0) return I2cErrorCallback();
+        }
+        *pBuffer = I2C_ReceiveData();
+
+        pBuffer++;
+        numByteToRead--;
+    }
+
+    I2C_AcknowledgeConfig(I2C_ACK_NONE);
+    I2CTimeout = I2C_FLAG_TIMEOUT;
+    while(!I2C_CheckEvent(I2C_EVENT_MASTER_BYTE_RECEIVED))
+    {
+        if((I2CTimeout--) == 0) return I2cErrorCallback();
+    }
+
+    *pBuffer = I2C_ReceiveData();
+    I2C_GenerateSTOP(ENABLE);
+    
+    return SUCCESS;
+}
+
+ErrorStatus I2c::WaitSlaveStandbyState(void) {
+
+  __IO uint8_t tmpSR1 = 0;
+  __IO uint32_t sEETrials = 0;
+
+ /* While the bus is busy */
+  I2CTimeout = I2C_FLAG_TIMEOUT;
   while(I2C_GetFlagStatus(I2C_FLAG_BUSBUSY))
   {
-    ;//TimeOut
+     if((I2CTimeout--) == 0) return I2cErrorCallback();
   }
 
-  /* Send START condition */
-  I2C_GenerateSTART(ENABLE);
-
-  /* Test on EV5 and clear it */
-  while(!I2C_CheckEvent(I2C_EVENT_MASTER_MODE_SELECT))
+  /* Keep looping till the slave acknowledges his address or the maximum number
+     of trials is reached (this number is defined by sEE_MAX_TRIALS_NUMBER define
+     in stm8s_eval_i2c_ee.h file) */
+  while (1)
   {
-    ;//TimeOut
-  }
+    /* Send START condition */
+    I2C_GenerateSTART(ENABLE);
 
-  /* Send address for write */
-  I2C_Send7bitAddress(slaveAddress_, I2C_DIRECTION_TX);
-
-  /* Test on EV6 and clear it */
-  while(!I2C_CheckEvent(I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
-  {
-    ;//TimeOut
-  }
-
-  /* Send the EEPROM's internal address to write to : only one byte Address */
-  I2C_SendData(writeAddr);
-
-  /* Test on EV8 and clear it */
-  while(!I2C_CheckEvent(I2C_EVENT_MASTER_BYTE_TRANSMITTED))
-  {
-    ;//TimeOut
-  }
-
-  /* While there is data to be written */
-  while(numByteToWrite > 0)
-  {
-    /* Send the byte to be written */
-    I2C_SendData(*pBuffer);
-
-    /* Test on EV8 and clear it */
-    /* Wait till all data have been physically transferred on the bus */
-    while(!I2C_GetFlagStatus(I2C_FLAG_TRANSFERFINISHED))
+    /* Test on EV5 and clear it */
+    I2CTimeout = I2C_FLAG_TIMEOUT;
+    while(!I2C_CheckEvent(I2C_EVENT_MASTER_MODE_SELECT))
     {
-      ;//TimeOut
+      if((I2CTimeout--) == 0) return I2cErrorCallback();
     }
-    numByteToWrite--;
+
+    /* Send EEPROM address for write */
+    I2C_Send7bitAddress(slaveAddress_, I2C_DIRECTION_TX);
+
+    /* Wait for ADDR flag to be set (Slave acknowledged his address) */
+    I2CTimeout = I2C_FLAG_TIMEOUT;
+    do
+    {
+      /* Get the current value of the SR1 register */
+      tmpSR1 = I2C->SR1;
+
+      /* Update the timeout value and exit if it reach 0 */
+      if((I2CTimeout--) == 0) return I2cErrorCallback();
+    }
+    /* Keep looping till the Address is acknowledged or the AF flag is
+       set (address not acknowledged at time) */
+    while((I2C_GetFlagStatus(I2C_FLAG_ADDRESSSENTMATCHED)== RESET) &
+          (I2C_GetFlagStatus(I2C_FLAG_ACKNOWLEDGEFAILURE)== RESET));
+    tmpSR1 = I2C->SR1;
+    /* Check if the ADDR flag has been set */
+    if (tmpSR1 & I2C_SR1_ADDR)
+    {
+      /* Clear ADDR Flag by reading SR1 then SR3 registers (SR1 have already
+         been read) */
+      (void)I2C->SR3;
+
+      /* STOP condition */
+      I2C_GenerateSTOP(ENABLE);
+
+      /* Exit the function */
+      return SUCCESS;
+    }
+    else
+    {
+      /* Clear AF flag */
+      I2C_ClearFlag(I2C_FLAG_ACKNOWLEDGEFAILURE);
+    }
+
+    /* Check if the maximum allowed number of trials has bee reached */
+    if (sEETrials++ == MAX_TRIALS_NUMBER)
+    {
+      /* If the maximum number of trials has been reached, exit the function */
+      return I2cErrorCallback();
+    }
   }
 
-  /* Send STOP condition */
-  I2C_GenerateSTOP(ENABLE);
-
-  /* Perform a read on SR1 and SR3 register to clear eventually pending flags */
-  (void)I2C->SR1;
-  (void)I2C->SR3;
-#endif  
 }
-
-const  uint16_t AT24C02_WRITE_PAGE_SIZE = 8;	//叶宽
-//const  uint16_t EEPROM_AT24C02_READ_RANG_SIZE = 256;	//2kBIT
 
 void Eeprom::Write(uint16_t startAddr, uint8_t *buf, uint16_t length)
 {
@@ -327,172 +256,43 @@ void Eeprom::Write(uint16_t startAddr, uint8_t *buf, uint16_t length)
     uint16_t full_page_cnt;
     uint8_t *pdata = buf;
 
-    first_page_size = AT24C02_WRITE_PAGE_SIZE - startAddr % AT24C02_WRITE_PAGE_SIZE;
-    full_page_cnt = (length - first_page_size)/AT24C02_WRITE_PAGE_SIZE;			//满页数量
-    last_page_size  = (length - first_page_size) % AT24C02_WRITE_PAGE_SIZE;
+    if ((startAddr + length) > maxByte_) {
+        //out of rang
+        while(true);
+    }
+    
+    first_page_size = pageSize_ - startAddr % pageSize_;
+    full_page_cnt = (length - first_page_size)/pageSize_;			//满页数量
+    last_page_size  = (length - first_page_size) % pageSize_;
     next_page_base_addr = startAddr + first_page_size;
-    last_page_base_addr = full_page_cnt * AT24C02_WRITE_PAGE_SIZE + next_page_base_addr;
+    last_page_base_addr = full_page_cnt * pageSize_ + next_page_base_addr;
 
     if (first_page_size > 0) {
         Send(pdata, startAddr, first_page_size);
-        Sys::DelayMs(5);
+        WaitSlaveStandbyState();
+        //Sys::DelayMs(5);
     }
 
     pdata += first_page_size;
 
     if (full_page_cnt > 0) {
         for(int i = 0; i < full_page_cnt; i++) {
-            Send(pdata, next_page_base_addr, AT24C02_WRITE_PAGE_SIZE);
-            next_page_base_addr += AT24C02_WRITE_PAGE_SIZE;
-            pdata += AT24C02_WRITE_PAGE_SIZE;
-            Sys::DelayMs(5);
+            Send(pdata, next_page_base_addr, pageSize_);
+            next_page_base_addr += pageSize_;
+            pdata += pageSize_;
+            WaitSlaveStandbyState();
+            //Sys::DelayMs(5);
         }
     }
 
     if (last_page_size > 0) {
         Send(pdata, last_page_base_addr, last_page_size);
-        Sys::DelayMs(5);
+        WaitSlaveStandbyState();
+        //Sys::DelayMs(5);
     }
 }
 
 void Eeprom::Read(uint16_t startAddr, uint8_t *buf, uint16_t length)
 {
    Receive(buf, startAddr, length);
-}
-
-#define I2C_TimeOut         ((unsigned long)0x10000)
-
-#define I2cGpioPort			GPIOB
-#define SclGpioPin			GPIO_PIN_4
-#define SdaGpioPin			GPIO_PIN_5
-
-#define SCL_Low()           GPIO_WriteLow(I2cGpioPort, SclGpioPin)
-#define SCL_High()          GPIO_WriteHigh(I2cGpioPort, SclGpioPin)
-
-#define SDA_Low()           GPIO_WriteLow(I2cGpioPort, SdaGpioPin)
-#define SDA_High()          GPIO_WriteHigh(I2cGpioPort, SdaGpioPin)
-
-#define SetSDA_Input()      GPIO_Init(I2cGpioPort, SdaGpioPin, GPIO_MODE_IN_PU_NO_IT)
-#define SetSDA_Output()     GPIO_Init(I2cGpioPort, SdaGpioPin, GPIO_MODE_OUT_OD_HIZ_FAST)
-
-#define Read_SDA()          GPIO_ReadInputPin(I2cGpioPort, SdaGpioPin)
-
-
-void I2cCtrl::DelayNop() {
-    char i;
-    for (i = 0; i < 1; i++) {
-       asm("nop");
-    }
-}
-
-void I2cCtrl::Init()
-{
-    GPIO_Init(I2cGpioPort, (GPIO_Pin_TypeDef)(SclGpioPin | SdaGpioPin), GPIO_MODE_OUT_PP_HIGH_FAST);
-//    GPIO_Init(I2cGpioPort, , GPIO_MODE_OUT_PP_HIGH_FAST);
-    SDA_High();
-    SCL_High();
-}
-
-/* 执行前SCL = 1; SDA = 1;
-     执行后SCL = 0; SDA = 0;*/
-void I2cCtrl::Start()
-{
-    //DelayNop();
-    SDA_Low();
-    DelayNop();
-    SCL_Low();
-    DelayNop();
-}
-
-/* 执行前SCL = 0; SDA = ?
-     执行后SCL = 1; SDA = 1*/
-void I2cCtrl::Stop()
-{
-    DelayNop();
-    SDA_Low();
-    DelayNop();
-    SCL_High();
-    DelayNop();
-    SDA_High();
-    DelayNop();
-}
-
-/* 执行前SCL = 0; SDA = ?
-     执行后SCL = 0; SDA = ?*/
-void I2cCtrl::WriteByte(uint8_t data)
-{
-    uint8_t i = 0;
-//    unsigned char ack = 0;
-
-    for (i = 0; i < 8; i++)
-    {
-        if (data & (0x80>>i))
-        {
-            SDA_High();
-        }
-        else
-        {
-            SDA_Low();
-        }
-        DelayNop();
-        SCL_High();
-        DelayNop();
-        SCL_Low();
-        DelayNop();
-    }
-    SetSDA_Input();
-    SCL_High();
-    DelayNop();
-    //ack = Read_SDA();
-    Read_SDA();
-    SCL_Low();
-    SetSDA_Output();
-}
-
-/* 执行前SCL = ?;SDA = ?
-    执行后SCL = 0; SDA = 0;*/
-void I2cCtrl::Restart()
-{
-    DelayNop();
-    SCL_Low();
-    DelayNop();
-    SDA_High();
-    DelayNop();
-    SCL_High();
-    DelayNop();
-    SDA_Low();
-    DelayNop();
-    SCL_Low();
-    DelayNop();
-}
-
-/* 执行前SCL = 0; SDA = ?
-     执行后SCL = 0; SDA = 0*/
-uint8_t I2cCtrl::ReadByte(bool isNack)
-{
-    uint8_t data = 0;
-    uint8_t i = 0;
-
-    SetSDA_Input();
-    for (i = 0; i < 8; i++)
-    {
-        SCL_Low();
-		DelayNop();
-
-        SCL_High();
-        //DelayNop();
-        data |= (Read_SDA()<<(7-i));
-        //DelayNop();
-    }
-    SCL_Low();
-    DelayNop();
-    SetSDA_Output();
-    SDA_Low();
-	DelayNop();
-	if (isNack)
-		SDA_High();
-    SCL_High();
-	DelayNop();
-    SCL_Low();
-    return data;
 }
