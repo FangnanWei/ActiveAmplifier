@@ -67,87 +67,87 @@ OledParam OledSpdParam(GPIOD, GPIO_PIN_3, GPIO_MODE_OUT_PP_LOW_FAST, true, GPIOD
 
 void main(void)
 {
-  Sys::CpuInit();
-  
-  enableInterrupts();
-  
-  Gpio *led01_ =  new Gpio(GpioLed01Param);
-  led01_->Init();
-  
-  Gpio *led02_ = new Gpio(GpioLed02Param);
-  led02_->Init();
-  
-  Gpio *led03_ = new Gpio(GpioLed03Param);
-  led03_->Init();
-  
-  Oled *oled = new Oled(OledSpdParam);
-  oled->Init();
-#if 0 
-  Eeprom *eeprom = new Eeprom(EepronAddress, true, EepronPageSize, EepronPageSize * EepronPages);
+	Sys::CpuInit();
 
-  eeprom->Test();
-#endif
-  
-  Key *resetKey = new Key(GpioEcKeyIoParam, 10000);
-  RotaryEncoder *enc = new RotaryEncoder(GpioEcAIoParam, GpioEcBIoParam);
-  RotaryEncoderType encType = RotaryEncoder_None;
-  
-  
-  /* Infinite loop */
-  Sys::BeepRingForMs(100);
-  
-  const uint8_t LedCnt = 3;
-  int i = 0;
-  bool ledState[LedCnt] = {true, false, false};
-  bool tempLedState[LedCnt]; 
-  
-  while (1)
-  {
+	enableInterrupts();
+
+	Gpio *led01_ =  new Gpio(GpioLed01Param);
+	led01_->Init();
+
+	Gpio *led02_ = new Gpio(GpioLed02Param);
+	led02_->Init();
+
+	Gpio *led03_ = new Gpio(GpioLed03Param);
+	led03_->Init();
+
+	Oled *oled = new Oled(OledSpdParam);
+	oled->Init();
+	#if 1 
+	Eeprom *eeprom = new Eeprom(EepronAddress, true, EepronPageSize, EepronPageSize * EepronPages);
+
+	eeprom->Test();
+	#endif
+
+	Key *resetKey = new Key(GpioEcKeyIoParam, 10000);
+	RotaryEncoder *enc = new RotaryEncoder(GpioEcAIoParam, GpioEcBIoParam);
+	RotaryEncoderType encType = RotaryEncoder_None;
+
+
+	/* Infinite loop */
+	Sys::BeepRingForMs(100);
+
+	const uint8_t LedCnt = 3;
+	int i = 0;
+	bool ledState[LedCnt] = {true, false, false};
+	bool tempLedState[LedCnt]; 
+
+	while (1)
+	{
 #if 0    
-    led01_->Enable();
-    Sys::DelaySecond(1);
-    led01_->Disable();
-    Sys::DelaySecond(1);
+		led01_->Enable();
+		Sys::DelaySecond(1);
+		led01_->Disable();
+		Sys::DelaySecond(1);
 #endif
-     resetKey->Scan();
-     encType = enc->Scan();
-     if (encType == RotaryEncoder_LeftTurn) {
-        //×ó¹ö¶¯
-       for (i = 0; i < LedCnt; i++) {
-           tempLedState[i] = ledState[(i + 1)%LedCnt];
-       }
-       for (i = 0; i < LedCnt; i++) {
-           ledState[i] = tempLedState[i];
-           if (i == 0) {
-            led01_->SetOut(!ledState[i]);
-           }
-           else if (i == 1) {
-            led02_->SetOut(!ledState[i]);
-           }
-           else if (i == 2) {
-            led03_->SetOut(!ledState[i]);
-           }
-       }
-     }
-     if (encType == RotaryEncoder_RightTurn) {
-        //ÓÒ±ß¹ö¶¯
-       for (i = 0; i < LedCnt; i++) {
-           tempLedState[(i + 1)%LedCnt] = ledState[i];
-       }
-       for (i = 0; i < LedCnt; i++) {
-           ledState[i] = tempLedState[i];
-           if (i == 0) {
-            led01_->SetOut(!ledState[i]);
-           }
-           else if (i == 1) {
-            led02_->SetOut(!ledState[i]);
-           }
-           else if (i == 2) {
-            led03_->SetOut(!ledState[i]);
-           }
-       } 
-     }
-  }
+		resetKey->Scan();
+		encType = enc->Scan();
+		if (encType == RotaryEncoder_LeftTurn) {
+			//×ó¹ö¶¯
+			for (i = 0; i < LedCnt; i++) {
+				tempLedState[i] = ledState[(i + 1)%LedCnt];
+			}
+			for (i = 0; i < LedCnt; i++) {
+			   ledState[i] = tempLedState[i];
+			   if (i == 0) {
+					led01_->SetOut(!ledState[i]);
+			   }
+			   else if (i == 1) {
+					led02_->SetOut(!ledState[i]);
+			   }
+			   else if (i == 2) {
+					led03_->SetOut(!ledState[i]);
+			   }
+			}
+		}
+		if (encType == RotaryEncoder_RightTurn) {
+		//ÓÒ±ß¹ö¶¯
+			for (i = 0; i < LedCnt; i++) {
+			   tempLedState[(i + 1)%LedCnt] = ledState[i];
+			}
+			for (i = 0; i < LedCnt; i++) {
+			   ledState[i] = tempLedState[i];
+			   if (i == 0) {
+					led01_->SetOut(!ledState[i]);
+			   }
+			   else if (i == 1) {
+					led02_->SetOut(!ledState[i]);
+			   }
+			   else if (i == 2) {
+					led03_->SetOut(!ledState[i]);
+			   }
+			} 
+		}
+	}
 }
 
 #ifdef USE_FULL_ASSERT

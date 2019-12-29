@@ -2,7 +2,7 @@
 
 
 const uint32_t TimeCounterPeriod = HSE_VALUE/1000;
-const uint32_t I2cSpeed = 400000;//100K
+const uint32_t I2cSpeed = 200000;//100K, EEPROM正常最高跑2.5K，过高将出错
 const uint16_t I2cOwnAddress = 0xA0;
 
 static void ClockInit() { 

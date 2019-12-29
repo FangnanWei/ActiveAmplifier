@@ -44,21 +44,21 @@ void Eeprom::Write(uint16_t startAddr, uint8_t *buf, uint16_t length)
 
 void Eeprom::Read(uint16_t startAddr, uint8_t *buf, uint16_t length)
 {
-   i2c_->Receive(buf, startAddr, length);
+	i2c_->Receive(buf, startAddr, length);
 }
 
 void Eeprom::Test() 
 {
-  uint8_t Tx1_Buffer[] = "STM8S I2C Firmware Library EEPROM driver example";
-  uint8_t tempBuf[sizeof(Tx1_Buffer)];
-  int i = 0;
-  
-  Write(0xe4, Tx1_Buffer, sizeof(Tx1_Buffer));
-  Read(0xe4, tempBuf, sizeof(Tx1_Buffer));
-  
-  for (i = 0; i < sizeof(Tx1_Buffer); i++) {
-    if (tempBuf[i] != Tx1_Buffer[i]) {
-        while(1);//Failed£¡£¡
-    }
-  }
+	uint8_t Tx1_Buffer[] = "STM8S I2C Firmware Library EEPROM driver example";
+	uint8_t tempBuf[sizeof(Tx1_Buffer)];
+	int i = 0;
+
+	Write(0xe4, Tx1_Buffer, sizeof(Tx1_Buffer));
+	Read(0xe4, tempBuf, sizeof(Tx1_Buffer));
+
+	for (i = 0; i < sizeof(Tx1_Buffer); i++) {
+	if (tempBuf[i] != Tx1_Buffer[i]) {
+		while(1);//Failed£¡£¡
+	}
+	}
 }
