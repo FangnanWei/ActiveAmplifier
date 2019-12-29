@@ -11,6 +11,7 @@ public:
   static void CpuInit();
   static void DelayMs(uint32_t ms);
   static void DelaySecond(uint32_t second);
+  static uint32_t GetTimeMs();
   static void BeepRingForMs(uint32_t ms);
 };
 

@@ -33,12 +33,17 @@ public:
   }
   void Init();
   void ReInit(GPIO_Mode_TypeDef newMode, bool newHighEnable);
+  
+  bool GetIn();
+  void SetOut(bool isHigh);
+  
   void Enable();
   void EnableForMs(uint32_t ms);
   void Disable();
   void DisableForMs(uint32_t ms);
-  bool GetIn();
-  void SetOut(bool isHigh);
+  
+  //输入是否被使能
+  bool GetInState();
   
 private: 
   GPIO_TypeDef* bank_;

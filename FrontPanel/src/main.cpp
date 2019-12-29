@@ -33,7 +33,11 @@ extern "C" {
 }
 #include "Gpio.h"
 #include "Sys.h"
-#include "I2c.h"
+#include "Chip/Eeprom.h"
+#include "Chip/Oled.h"
+#include "Chip/Key.h"
+#include "Chip/RotaryEncoder.h"
+
 /* Private defines -----------------------------------------------------------*/
 const uint8_t EepronAddress = 0xA8;
 const uint16_t EepronPageSize = 64;
@@ -51,19 +55,13 @@ GpioParam GpioLed01Param(GPIOC, GPIO_PIN_4, GPIO_MODE_OUT_PP_LOW_FAST, false);
 GpioParam GpioLed02Param(GPIOC, GPIO_PIN_3, GPIO_MODE_OUT_PP_LOW_FAST, false);
 GpioParam GpioLed03Param(GPIOC, GPIO_PIN_2, GPIO_MODE_OUT_PP_LOW_FAST, false);
 
-uint8_t Tx1_Buffer[] = " STM8S I2C Firmware Library EEPROM driver example: \
-                        buffer 1 transfer into address sEE_WRITE_ADDRESS1  \
-                        Example Description \
-                        This firmware provides a basic example of how to use the I2C firmware library and\
-                        an associate I2C EEPROM driver to communicate with an I2C EEPROM device (here the\
-                        example is interfacing with M24C64 EEPROM)\
-                          \
-                        I2C peripheral is configured in Master transmitter during write operation and in\
-                        Master receiver during read operation from I2C EEPROM. \
-                          \
-                        I2C peripheral speed is set to 200kHz and can be configured by \
-                        modifying the relative define in stm8s_eval_i2c_ee.h file.\
-                         ";
+GpioParam GpioRestKeyIoParam(GPIOE, GPIO_PIN_5, GPIO_MODE_IN_PU_NO_IT, false);
+GpioParam GpioEcKeyIoParam(GPIOC, GPIO_PIN_7, GPIO_MODE_IN_PU_NO_IT, false);
+
+GpioParam GpioEcAIoParam(GPIOC, GPIO_PIN_5, GPIO_MODE_IN_PU_NO_IT, false);
+GpioParam GpioEcBIoParam(GPIOC, GPIO_PIN_6, GPIO_MODE_IN_PU_NO_IT, false);
+
+OledParam OledSpdParam(GPIOD, GPIO_PIN_3, GPIO_MODE_OUT_PP_LOW_FAST, true, GPIOD, GPIO_PIN_2, GPIO_MODE_OUT_PP_LOW_FAST, true, 0x78);                          
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -82,33 +80,74 @@ void main(void)
   Gpio *led03_ = new Gpio(GpioLed03Param);
   led03_->Init();
   
+  Oled *oled = new Oled(OledSpdParam);
+  oled->Init();
+#if 0 
   Eeprom *eeprom = new Eeprom(EepronAddress, true, EepronPageSize, EepronPageSize * EepronPages);
+
+  eeprom->Test();
+#endif
   
-  int i = 0;
-  eeprom->Write(0xe4, Tx1_Buffer, sizeof(Tx1_Buffer));
+  Key *resetKey = new Key(GpioEcKeyIoParam, 10000);
+  RotaryEncoder *enc = new RotaryEncoder(GpioEcAIoParam, GpioEcBIoParam);
+  RotaryEncoderType encType = RotaryEncoder_None;
   
-  uint8_t tempBuf[sizeof(Tx1_Buffer)];
-  Sys::DelayMs(2);//写完必须出来再等两毫秒，内部等还不行！！
-  eeprom->Read(0xe4, tempBuf, sizeof(Tx1_Buffer));
   
-  for (i = 0; i < sizeof(Tx1_Buffer); i++) {
-    if (tempBuf[i] != Tx1_Buffer[i]) {
-        //while(1);
-        i++;
-        continue;
-        
-    }
-  }
   /* Infinite loop */
   Sys::BeepRingForMs(100);
+  
+  const uint8_t LedCnt = 3;
+  int i = 0;
+  bool ledState[LedCnt] = {true, false, false};
+  bool tempLedState[LedCnt]; 
+  
   while (1)
   {
+#if 0    
     led01_->Enable();
     Sys::DelaySecond(1);
     led01_->Disable();
     Sys::DelaySecond(1);
+#endif
+     resetKey->Scan();
+     encType = enc->Scan();
+     if (encType == RotaryEncoder_LeftTurn) {
+        //左滚动
+       for (i = 0; i < LedCnt; i++) {
+           tempLedState[i] = ledState[(i + 1)%LedCnt];
+       }
+       for (i = 0; i < LedCnt; i++) {
+           ledState[i] = tempLedState[i];
+           if (i == 0) {
+            led01_->SetOut(!ledState[i]);
+           }
+           else if (i == 1) {
+            led02_->SetOut(!ledState[i]);
+           }
+           else if (i == 2) {
+            led03_->SetOut(!ledState[i]);
+           }
+       }
+     }
+     if (encType == RotaryEncoder_RightTurn) {
+        //右边滚动
+       for (i = 0; i < LedCnt; i++) {
+           tempLedState[(i + 1)%LedCnt] = ledState[i];
+       }
+       for (i = 0; i < LedCnt; i++) {
+           ledState[i] = tempLedState[i];
+           if (i == 0) {
+            led01_->SetOut(!ledState[i]);
+           }
+           else if (i == 1) {
+            led02_->SetOut(!ledState[i]);
+           }
+           else if (i == 2) {
+            led03_->SetOut(!ledState[i]);
+           }
+       } 
+     }
   }
-  
 }
 
 #ifdef USE_FULL_ASSERT

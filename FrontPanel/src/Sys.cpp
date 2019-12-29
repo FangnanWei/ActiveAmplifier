@@ -77,6 +77,10 @@ void Sys::DelaySecond(uint32_t second) {
   DelayMs(ms);
 }
 
+uint32_t Sys::GetTimeMs() {
+    return TimeCounterCntGet();
+}
+
 void Sys::BeepRingForMs(uint32_t ms) {
   BEEP_Cmd(ENABLE);
   DelayMs(ms);

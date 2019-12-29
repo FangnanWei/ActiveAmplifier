@@ -57,3 +57,8 @@ void Gpio::SetOut(bool isHigh) {
     GPIO_WriteLow(bank_, pin_);
   }
 }
+
+bool Gpio::GetInState() {
+    return highEnable_ == GetIn();
+}
+

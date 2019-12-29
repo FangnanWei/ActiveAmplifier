@@ -417,7 +417,7 @@ void Screen_SetCoordinate(uint8_t x_point, uint8_t y_point)
 	OLED_SetColumnAddress4HigherBits(x_point + 2);
 }
 
-//显示屏是8行，而菜单是4行，每行菜单占用两行显示屏 所以传递时候y行号都要乘以2
+//显示屏是8行，而菜单是4行，每行菜单占用两行显示�? 所以传递时候y行号都要乘以2
 void Screen_DrawAreaToWhiteOrBlack(uint8_t x_start, uint8_t y_start, uint8_t x_size, uint8_t y_size, bool ToWhite)
 {
 	uint8_t x, y;
@@ -503,7 +503,7 @@ void Display_CleanWholeAreaToBlack(void)
 	Screen_DrawAreaToWhiteOrBlack(0, 0, 128, 8, FALSE);
 }
 
-///OLED--根本设备        Screen--属性    Display--显示界面
+///OLED--根本设备        Screen--属�?    Display--显示界面
 
 void Display_ShowTendZoneLogo(void)
 {

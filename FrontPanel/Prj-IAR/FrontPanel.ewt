@@ -2155,6 +2155,21 @@
     </configuration>
     <group>
         <name>inc</name>
+        <group>
+            <name>Chip</name>
+            <file>
+                <name>$PROJ_DIR$\..\inc\Chip\Eeprom.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\inc\Chip\Key.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\inc\Chip\Oled.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\inc\Chip\RotaryEncoder.h</name>
+            </file>
+        </group>
         <file>
             <name>$PROJ_DIR$\..\inc\Gpio.h</name>
         </file>
@@ -2170,9 +2185,27 @@
         <file>
             <name>$PROJ_DIR$\..\inc\Sys.h</name>
         </file>
+        <file>
+            <name>$PROJ_DIR$\..\inc\Chip\Uart.h</name>
+        </file>
     </group>
     <group>
         <name>src</name>
+        <group>
+            <name>Chip</name>
+            <file>
+                <name>$PROJ_DIR$\..\src\Chip\Eeprom.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\src\Chip\Key.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\src\Chip\Oled.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\src\Chip\RotaryEncoder.cpp</name>
+            </file>
+        </group>
         <file>
             <name>$PROJ_DIR$\..\src\Gpio.cpp</name>
         </file>
