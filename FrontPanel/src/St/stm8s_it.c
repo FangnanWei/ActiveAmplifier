@@ -28,7 +28,7 @@
   */ 
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm8s_it.h"
+#include "St/stm8s_it.h"
 
 /** @addtogroup Template_Project
   * @{

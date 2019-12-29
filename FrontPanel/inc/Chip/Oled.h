@@ -4,8 +4,8 @@
 extern "C" {
 #include "stm8s.h"
 }
-#include "I2c.h"
-#include "Gpio.h"
+#include "St/I2c.h"
+#include "St/Gpio.h"
 
 struct OledParam {
     GpioParam resetIoParam_;

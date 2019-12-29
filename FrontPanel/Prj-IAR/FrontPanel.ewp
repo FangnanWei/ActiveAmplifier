@@ -1653,23 +1653,26 @@
                 <name>$PROJ_DIR$\..\inc\Chip\RotaryEncoder.h</name>
             </file>
         </group>
+        <group>
+            <name>St</name>
+            <file>
+                <name>$PROJ_DIR$\..\inc\St\Gpio.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\inc\St\I2c.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\inc\St\stm8s_it.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\inc\St\Sys.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\inc\St\Uart.h</name>
+            </file>
+        </group>
         <file>
-            <name>$PROJ_DIR$\..\inc\Gpio.h</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\inc\I2c.h</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\inc\stm8s_conf.h</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\inc\stm8s_it.h</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\inc\Sys.h</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\inc\Chip\Uart.h</name>
+            <name>$PROJ_DIR$\..\inc\Argument.h</name>
         </file>
     </group>
     <group>
@@ -1689,20 +1692,26 @@
                 <name>$PROJ_DIR$\..\src\Chip\RotaryEncoder.cpp</name>
             </file>
         </group>
-        <file>
-            <name>$PROJ_DIR$\..\src\Gpio.cpp</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\src\I2c.cpp</name>
-        </file>
+        <group>
+            <name>St</name>
+            <file>
+                <name>$PROJ_DIR$\..\src\St\Gpio.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\src\St\I2c.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\src\St\stm8s_it.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\src\St\Sys.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\src\St\Uart.cpp</name>
+            </file>
+        </group>
         <file>
             <name>$PROJ_DIR$\..\src\main.cpp</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\src\stm8s_it.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\src\Sys.cpp</name>
         </file>
     </group>
     <group>
@@ -1729,6 +1738,9 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\..\STM8S_StdPeriph_Driver\inc\stm8s_clk.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\STM8S_StdPeriph_Driver\inc\stm8s_conf.h</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\STM8S_StdPeriph_Driver\inc\stm8s_exti.h</name>

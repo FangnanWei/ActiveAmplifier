@@ -31,8 +31,8 @@ extern "C" {
 #include "stm8s.h"
 #include "stdlib.h"
 }
-#include "Gpio.h"
-#include "Sys.h"
+#include "St/Gpio.h"
+#include "St/Sys.h"
 #include "Chip/Eeprom.h"
 #include "Chip/Oled.h"
 #include "Chip/Key.h"

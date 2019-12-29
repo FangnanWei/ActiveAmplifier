@@ -1,9 +1,8 @@
-#include "Sys.h"
+#include "St/Sys.h"
 
-#define MY_I2C 
 
 const uint32_t TimeCounterPeriod = HSE_VALUE/1000;
-const uint32_t I2cSpeed = 200000;//100K
+const uint32_t I2cSpeed = 400000;//100K
 const uint16_t I2cOwnAddress = 0xA0;
 
 static void ClockInit() { 

@@ -1,5 +1,5 @@
-#include "I2c.h"
-#include "Sys.h"
+#include "St/I2c.h"
+#include "St/Sys.h"
 
 const uint32_t I2C_FLAG_TIMEOUT = 0x1000;
 const uint32_t I2C_LONG_TIMEOUT = 10 * I2C_FLAG_TIMEOUT;
