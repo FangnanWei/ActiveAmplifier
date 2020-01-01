@@ -752,7 +752,7 @@
                 <expressions>
                     <item>pressTime_</item>
                     <item>currStare_</item>
-                    <item></item>
+                    <item />
                 </expressions>
                 <col-names>
                     <item>Expression</item>

@@ -28,7 +28,7 @@
   */ 
 
 /* Includes ------------------------------------------------------------------*/
-#include "St/stm8s_it.h"
+#include "Driver/St/stm8s_it.h"
 
 /** @addtogroup Template_Project
   * @{

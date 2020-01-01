@@ -2156,75 +2156,105 @@
     <group>
         <name>inc</name>
         <group>
-            <name>Chip</name>
+            <name>Driver</name>
+            <group>
+                <name>Chip</name>
+                <file>
+                    <name>$PROJ_DIR$\..\inc\Driver\Chip\Eeprom.h</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\inc\Driver\Chip\Key.h</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\inc\Driver\Chip\Oled.h</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\inc\Driver\Chip\RotaryEncoder.h</name>
+                </file>
+            </group>
+            <group>
+                <name>St</name>
+                <file>
+                    <name>$PROJ_DIR$\..\inc\Driver\St\Gpio.h</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\inc\Driver\St\I2c.h</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\inc\Driver\St\stm8s_it.h</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\inc\Driver\St\Sys.h</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\inc\Driver\St\Uart.h</name>
+                </file>
+            </group>
+        </group>
+        <group>
+            <name>Nip</name>
             <file>
-                <name>$PROJ_DIR$\..\inc\Chip\Eeprom.h</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\inc\Chip\Key.h</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\inc\Chip\Oled.h</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\inc\Chip\RotaryEncoder.h</name>
+                <name>$PROJ_DIR$\..\inc\Nip\Argument.h</name>
             </file>
         </group>
         <group>
-            <name>St</name>
+            <name>Util</name>
             <file>
-                <name>$PROJ_DIR$\..\inc\St\Gpio.h</name>
+                <name>$PROJ_DIR$\..\inc\Util\Array.h</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\inc\St\I2c.h</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\inc\St\stm8s_it.h</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\inc\St\Sys.h</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\inc\St\Uart.h</name>
+                <name>$PROJ_DIR$\..\inc\Util\StringUtil.h</name>
             </file>
         </group>
-        <file>
-            <name>$PROJ_DIR$\..\inc\Argument.h</name>
-        </file>
     </group>
     <group>
         <name>src</name>
         <group>
-            <name>Chip</name>
+            <name>Driver</name>
+            <group>
+                <name>Chip</name>
+                <file>
+                    <name>$PROJ_DIR$\..\src\Driver\Chip\Eeprom.cpp</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\src\Driver\Chip\Key.cpp</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\src\Driver\Chip\Oled.cpp</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\src\Driver\Chip\RotaryEncoder.cpp</name>
+                </file>
+            </group>
+            <group>
+                <name>St</name>
+                <file>
+                    <name>$PROJ_DIR$\..\src\Driver\St\Gpio.cpp</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\src\Driver\St\I2c.cpp</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\src\Driver\St\stm8s_it.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\src\Driver\St\Sys.cpp</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\src\Driver\St\Uart.cpp</name>
+                </file>
+            </group>
+        </group>
+        <group>
+            <name>Nip</name>
             <file>
-                <name>$PROJ_DIR$\..\src\Chip\Eeprom.cpp</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\src\Chip\Key.cpp</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\src\Chip\Oled.cpp</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\src\Chip\RotaryEncoder.cpp</name>
+                <name>$PROJ_DIR$\..\src\Nip\Argument.cpp</name>
             </file>
         </group>
         <group>
-            <name>St</name>
+            <name>Util</name>
             <file>
-                <name>$PROJ_DIR$\..\src\St\Gpio.cpp</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\src\St\I2c.cpp</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\src\St\stm8s_it.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\src\St\Sys.cpp</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\src\St\Uart.cpp</name>
+                <name>$PROJ_DIR$\..\src\Util\StringUtil.cpp</name>
             </file>
         </group>
         <file>
@@ -2387,6 +2417,9 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\..\STM8S_StdPeriph_Driver\src\stm8s_uart3.c</name>
+                <configuration>
+                    <name>Debug</name>
+                </configuration>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\STM8S_StdPeriph_Driver\src\stm8s_uart4.c</name>

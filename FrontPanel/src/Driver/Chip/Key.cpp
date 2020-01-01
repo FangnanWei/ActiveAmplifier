@@ -1,5 +1,5 @@
-#include "Chip/Key.h"
-#include "St/Sys.h"
+#include "Driver/Chip/Key.h"
+#include "Driver/St/Sys.h"
 
 KeyPressType Key::Scan() {
     KeyPressType newPressType = KeyPressType_None;

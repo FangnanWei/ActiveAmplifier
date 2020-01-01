@@ -1,5 +1,5 @@
-#include "Chip/Oled.h"
-#include "St/Sys.h"
+#include "Driver/Chip/Oled.h"
+#include "Driver/St/Sys.h"
 
 const uint8_t OledCharSize = 16;
 const uint8_t OledMaxColumn = 128;
@@ -373,13 +373,11 @@ const uint8_t Logo_MO_2300D[] =
 };
 
 //m^nº¯Êý
-extern "C" {
 uint32_t Pow(uint8_t m,uint8_t n)
 {
 	uint32_t result=1;	 
 	while(n--)result*=m;    
 	return result;
-}
 }
 
 Oled::Oled(OledParam &param) {

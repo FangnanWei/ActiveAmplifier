@@ -1,17 +1,15 @@
-#include "St/I2c.h"
-#include "St/Sys.h"
+#include "Driver/St/I2c.h"
+#include "Driver/St/Sys.h"
 
 const uint32_t I2C_FLAG_TIMEOUT = 0x1000;
 const uint32_t I2C_LONG_TIMEOUT = 10 * I2C_FLAG_TIMEOUT;
 const uint32_t MAX_TRIALS_NUMBER = 150;
 static uint32_t I2CTimeout = 0;
 
-extern "C" {
 static ErrorStatus I2cErrorCallback(void)
 {
     I2C_GenerateSTOP(ENABLE);
     return ERROR;
-}
 }
 
 I2c::I2c(uint8_t slaveAddress, bool useWordRegAddr) {

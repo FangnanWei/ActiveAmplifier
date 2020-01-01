@@ -1,4 +1,4 @@
-#include "Chip/Eeprom.h"
+#include "Driver/Chip/Eeprom.h"
 
 void Eeprom::Write(uint16_t startAddr, uint8_t *buf, uint16_t length)
 {

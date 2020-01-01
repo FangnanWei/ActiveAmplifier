@@ -4,7 +4,7 @@
 extern "C" {
 #include "stm8s.h"
 }
-#include "St/I2c.h"
+#include "Driver/St/I2c.h"
 
 class Eeprom{
 public:

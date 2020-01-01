@@ -5,7 +5,7 @@ extern "C" {
 #include "stm8s.h"
 }
 
-#include "St/Gpio.h"
+#include "Driver/St/Gpio.h"
 
 enum KeyPressType{
     KeyPressType_Short,

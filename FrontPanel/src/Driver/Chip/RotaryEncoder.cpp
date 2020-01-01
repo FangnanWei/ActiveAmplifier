@@ -1,4 +1,4 @@
-#include "Chip/RotaryEncoder.h"
+#include "Driver/Chip/RotaryEncoder.h"
 
 RotaryEncoderType RotaryEncoder::Scan() {
    currIoAState_ = gpioA_->GetIn();

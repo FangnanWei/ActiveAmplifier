@@ -31,12 +31,12 @@ extern "C" {
 #include "stm8s.h"
 #include "stdlib.h"
 }
-#include "St/Gpio.h"
-#include "St/Sys.h"
-#include "Chip/Eeprom.h"
-#include "Chip/Oled.h"
-#include "Chip/Key.h"
-#include "Chip/RotaryEncoder.h"
+#include "Driver/St/Gpio.h"
+#include "Driver/St/Sys.h"
+#include "Driver/Chip/Eeprom.h"
+#include "Driver/Chip/Oled.h"
+#include "Driver/Chip/Key.h"
+#include "Driver/Chip/RotaryEncoder.h"
 
 /* Private defines -----------------------------------------------------------*/
 const uint8_t EepronAddress = 0xA8;

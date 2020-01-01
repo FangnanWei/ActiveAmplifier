@@ -1,5 +1,5 @@
-#include "St/Gpio.h"
-#include "St/Sys.h"
+#include "Driver/St/Gpio.h"
+#include "Driver/St/Sys.h"
 
 void Gpio::Init() {
   GPIO_Init(bank_, pin_, mode_);
