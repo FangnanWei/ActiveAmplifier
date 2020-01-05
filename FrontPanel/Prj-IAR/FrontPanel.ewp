@@ -82,11 +82,11 @@
                 </option>
                 <option>
                     <name>GenStackSize</name>
-                    <state>0x400</state>
+                    <state>0x200</state>
                 </option>
                 <option>
                     <name>GenHeapSize</name>
-                    <state>0x400</state>
+                    <state>0x800</state>
                 </option>
                 <option>
                     <name>GeneralEnableMisra</name>
@@ -1639,6 +1639,12 @@
     <group>
         <name>inc</name>
         <group>
+            <name>App</name>
+            <file>
+                <name>$PROJ_DIR$\..\inc\App\Menu.h</name>
+            </file>
+        </group>
+        <group>
             <name>Driver</name>
             <group>
                 <name>Chip</name>
@@ -1692,6 +1698,12 @@
     </group>
     <group>
         <name>src</name>
+        <group>
+            <name>App</name>
+            <file>
+                <name>$PROJ_DIR$\..\src\App\Menu.cpp</name>
+            </file>
+        </group>
         <group>
             <name>Driver</name>
             <group>

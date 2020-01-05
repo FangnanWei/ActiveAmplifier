@@ -38,6 +38,8 @@ extern "C" {
 #include "Driver/Chip/Key.h"
 #include "Driver/Chip/RotaryEncoder.h"
 
+#include "App/Menu.h"
+
 /* Private defines -----------------------------------------------------------*/
 const uint8_t EepronAddress = 0xA8;
 const uint16_t EepronPageSize = 64;
@@ -65,6 +67,32 @@ OledParam OledSpdParam(GPIOD, GPIO_PIN_3, GPIO_MODE_OUT_PP_LOW_FAST, true, GPIOD
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
+
+void ShowPage(Item *rootItem, Oled *oled) {
+	oled->Clear();
+	for (uint8_t i = 0; i < rootItem->GetSize(); i++) {
+		Item *son = rootItem->GetSon(i);
+		if (son) {
+			oled->ShowString(0, i*2, (const uint8_t *)son->GetFieldName());
+		}
+	}
+}
+
+//将一个页面显示出来
+void ShowSon(Item *rootItem, Oled *oled){
+  
+  for (uint8_t i = 0; i < rootItem->GetSize(); i++) {
+  	Item *son = rootItem->GetSon(i);
+	if (son) {
+		ShowPage(son, oled);
+		ShowSon(son, oled);
+	  
+	  //ShowSon(son);
+	}
+  }
+}
+
+
 void main(void)
 {
 	Sys::CpuInit();
@@ -88,19 +116,20 @@ void main(void)
 	eeprom->Test();
 	#endif
 
-	Key *resetKey = new Key(GpioEcKeyIoParam, 10000);
+	Key *encKey = new Key(GpioEcKeyIoParam, 2000);
+	KeyPressType encKeyType = KeyPressType_None;
 	RotaryEncoder *enc = new RotaryEncoder(GpioEcAIoParam, GpioEcBIoParam);
 	RotaryEncoderType encType = RotaryEncoder_None;
 
 
+	//Item *rootItem = new RootItem(NULL, "ROOT");
+	//ShowSon(rootItem, oled);
+	Menu *menu = new Menu(oled);
+	menu->ShowSubItems();
+	menu->ShowSymbol();
+	
 	/* Infinite loop */
 	Sys::BeepRingForMs(100);
-
-	const uint8_t LedCnt = 3;
-	int i = 0;
-	bool ledState[LedCnt] = {true, false, false};
-	bool tempLedState[LedCnt]; 
-
 	while (1)
 	{
 #if 0    
@@ -109,43 +138,14 @@ void main(void)
 		led01_->Disable();
 		Sys::DelaySecond(1);
 #endif
-		resetKey->Scan();
-		encType = enc->Scan();
-		if (encType == RotaryEncoder_LeftTurn) {
-			//左滚动
-			for (i = 0; i < LedCnt; i++) {
-				tempLedState[i] = ledState[(i + 1)%LedCnt];
-			}
-			for (i = 0; i < LedCnt; i++) {
-			   ledState[i] = tempLedState[i];
-			   if (i == 0) {
-					led01_->SetOut(!ledState[i]);
-			   }
-			   else if (i == 1) {
-					led02_->SetOut(!ledState[i]);
-			   }
-			   else if (i == 2) {
-					led03_->SetOut(!ledState[i]);
-			   }
-			}
+		encKeyType = encKey->Scan();
+		
+		if(encKeyType != KeyPressType_None) {
+			menu->Press(encKeyType);
 		}
-		if (encType == RotaryEncoder_RightTurn) {
-		//右边滚动
-			for (i = 0; i < LedCnt; i++) {
-			   tempLedState[(i + 1)%LedCnt] = ledState[i];
-			}
-			for (i = 0; i < LedCnt; i++) {
-			   ledState[i] = tempLedState[i];
-			   if (i == 0) {
-					led01_->SetOut(!ledState[i]);
-			   }
-			   else if (i == 1) {
-					led02_->SetOut(!ledState[i]);
-			   }
-			   else if (i == 2) {
-					led03_->SetOut(!ledState[i]);
-			   }
-			} 
+		encType = enc->Scan();
+		if (encType != RotaryEncoder_None) {
+			menu->Rolling(encType);
 		}
 	}
 }
