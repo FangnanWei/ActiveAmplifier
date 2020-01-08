@@ -1,0 +1,77 @@
+﻿  upgrade.c
+c:\users\nicho\desktop\project\ap\code\stm32\include\di_mcutypespublic.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\upgrade.c(47): warning C4090: “函数”: 不同的“volatile”限定符
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\upgrade.c(62): warning C4013: “UartSend”未定义；假设外部返回 int
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\upgrade.c(86): warning C4090: “函数”: 不同的“volatile”限定符
+  McuMsg.c
+c:\users\nicho\desktop\project\ap\code\stm32\include\di_mcutypespublic.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\mcumsg.c(168): warning C4013: “memcpy”未定义；假设外部返回 int
+  if.c
+c:\users\nicho\desktop\project\ap\code\stm32\include\di_mcutypespublic.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(58): warning C4018: “<”: 有符号/无符号不匹配
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(290): warning C4101: “timeout”: 未引用的局部变量
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(288): warning C4101: “nfds”: 未引用的局部变量
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(287): warning C4101: “maxFd”: 未引用的局部变量
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(289): warning C4101: “readset”: 未引用的局部变量
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(388): warning C4090: “函数”: 不同的“volatile”限定符
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(391): warning C4047: “函数”:“void *(__cdecl *)(void *)”与“void (__cdecl *)(void *)”的间接级别不同
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(391): warning C4022: “pthread_create”: 指针与实参 3 不匹配
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(394): warning C4090: “函数”: 不同的“volatile”限定符
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(416): warning C4090: “函数”: 不同的“volatile”限定符
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(450): warning C4013: “open”未定义；假设外部返回 int
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(456): warning C4013: “SendRebootMsg”未定义；假设外部返回 int
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(461): warning C4013: “SendBeginPacket”未定义；假设外部返回 int
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(470): warning C4013: “read”未定义；假设外部返回 int
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(478): warning C4013: “SendUserCode”未定义；假设外部返回 int
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(480): warning C4013: “close”未定义；假设外部返回 int
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(486): warning C4013: “SendEndPacket”未定义；假设外部返回 int
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(446): warning C4101: “i”: 未引用的局部变量
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(512): warning C4013: “SendDspBeginPacket”未定义；假设外部返回 int
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(501): warning C4101: “i”: 未引用的局部变量
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(560): warning C4013: “lseek”未定义；假设外部返回 int
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(601): warning C4133: “函数”: 从“MsgE2prom_t *”到“uint8_t *”的类型不兼容
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(613): warning C4133: “初始化”: 从“uint8_t *”到“MsgE2prom_t *”的类型不兼容
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(633): warning C4133: “初始化”: 从“uint8_t *”到“MsgE2prom_t *”的类型不兼容
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(635): warning C4101: “i”: 未引用的局部变量
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(684): warning C4133: “函数”: 从“MsgDsp_t *”到“uint8_t *”的类型不兼容
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(696): warning C4133: “初始化”: 从“uint8_t *”到“MsgDsp_t *”的类型不兼容
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(713): warning C4133: “初始化”: 从“uint8_t *”到“MsgDsp_t *”的类型不兼容
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(734): warning C4244: “=”: 从“uint16_t”转换到“uint8_t”，可能丢失数据
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(730): warning C4133: “初始化”: 从“uint8_t *”到“MsgDspExt_t *”的类型不兼容
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(752): warning C4244: “=”: 从“uint16_t”转换到“uint8_t”，可能丢失数据
+c:\users\nicho\desktop\project\ap\code\stm32\mcuif\if.c(748): warning C4133: “初始化”: 从“uint8_t *”到“MsgDspExt_t *”的类型不兼容
+  comfifo.c
+  example.c
+c:\users\nicho\desktop\project\ap\code\stm32\include\di_mcutypespublic.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(62): warning C4098: “main”:“void”函数返回值
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(69): warning C4098: “main”:“void”函数返回值
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(74): warning C4098: “main”:“void”函数返回值
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(82): warning C4098: “main”:“void”函数返回值
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(87): warning C4013: “DI_DspTopoUpgrade”未定义；假设外部返回 int
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(88): warning C4098: “main”:“void”函数返回值
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(96): warning C4098: “main”:“void”函数返回值
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(104): warning C4098: “main”:“void”函数返回值
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(118): warning C4098: “main”:“void”函数返回值
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(138): warning C4098: “main”:“void”函数返回值
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(146): warning C4098: “main”:“void”函数返回值
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(160): warning C4098: “main”:“void”函数返回值
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(180): warning C4098: “main”:“void”函数返回值
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(199): warning C4013: “DI_McuWriteDspExt”未定义；假设外部返回 int
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(200): warning C4098: “main”:“void”函数返回值
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(219): warning C4013: “DI_McuSafeloadDspExt”未定义；假设外部返回 int
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(220): warning C4098: “main”:“void”函数返回值
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(240): warning C4098: “main”:“void”函数返回值
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(134): warning C4477: “sscanf”: 格式字符串“%02x”需要类型“unsigned int *”的参数，但可变参数 1 拥有了类型“uint8_t *”
+  c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(134): note: 请考虑在格式字符串中使用“%hhx”
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(176): warning C4477: “sscanf”: 格式字符串“%02x”需要类型“unsigned int *”的参数，但可变参数 1 拥有了类型“uint8_t *”
+  c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(176): note: 请考虑在格式字符串中使用“%hhx”
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(196): warning C4477: “sscanf”: 格式字符串“%02x”需要类型“unsigned int *”的参数，但可变参数 1 拥有了类型“uint8_t *”
+  c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(196): note: 请考虑在格式字符串中使用“%hhx”
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(216): warning C4477: “sscanf”: 格式字符串“%02x”需要类型“unsigned int *”的参数，但可变参数 1 拥有了类型“uint8_t *”
+  c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(216): note: 请考虑在格式字符串中使用“%hhx”
+c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(236): warning C4477: “sscanf”: 格式字符串“%02x”需要类型“unsigned int *”的参数，但可变参数 1 拥有了类型“uint8_t *”
+  c:\users\nicho\desktop\project\ap\code\stm32\mcuexample\example.c(236): note: 请考虑在格式字符串中使用“%hhx”
+  正在生成代码...
+c:\users\nicho\desktop\project\ap\code\stm32\include\if.h(58): warning C4716: “GetSysMs”: 必须返回一个值
+  vs.vcxproj -> C:\Users\nicho\Desktop\Project\Ap\Code\stm32\vs\Debug\vs.exe
+  vs.vcxproj -> C:\Users\nicho\Desktop\Project\Ap\Code\stm32\vs\Debug\vs.pdb (Full PDB)

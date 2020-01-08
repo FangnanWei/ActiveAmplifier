@@ -1,0 +1,96 @@
+
+1、元件丝印图见：【DSPDNT-V10-23-1-T.PPC.pdf】
+
+2、场景LED为两个：A场景ED11常亮 / B场景ED12常亮 / C场景ED11+ED12常亮 ED11=LED11=PB14 / ED12=LED21=PC7		//两个LED灯用于指示当前场景号--完成
+
+3、场景切换按键：AK11=KEY11=PB15 长按3秒生效，按键生效后ED11+ED12作0.1秒快闪3秒，以指示正在切换场景/		//切换时候闪烁LED灯----完成
+
+4、输入衰减：VR11=P.9=ADCIN11=0.23V~2.5V 
+	0.23V ~ 1.5V对应DSP算法数值1.00 ~ 0.15，   //1.27--0.85  也就是两级比率调节
+	1.5V ~ 2.3V对应DSP算法数值0.15 ~ 0.01 	   //0.8--0.14
+	2.3V ~ 2.5V为MUTE，更新周期0.2秒，同步上报给UI
+	
+	
+	转动到最大0x12F(303)，转动到最小0xC1D(3101)
+
+5、两个输入通道增益地址和参数：
+/* Module Single11 - Single Volume*/
+#define MOD_SINGLE11_COUNT                             1
+#define MOD_SINGLE11_DEVICE                            "IC1"
+#define MOD_SINGLE11_GAIN1940ALGNS4_ADDR               5
+#define MOD_SINGLE11_GAIN1940ALGNS4_FIXPT              0x00800000
+#define MOD_SINGLE11_GAIN1940ALGNS4_VALUE              SIGMASTUDIOTYPE_FIXPOINT_CONVERT(1)
+#define MOD_SINGLE11_GAIN1940ALGNS4_TYPE               SIGMASTUDIOTYPE_FIXPOINT
+
+/* Module Single21 - Single Volume*/
+#define MOD_SINGLE21_COUNT                             1
+#define MOD_SINGLE21_DEVICE                            "IC1"
+#define MOD_SINGLE21_GAIN1940ALGNS3_ADDR               6
+#define MOD_SINGLE21_GAIN1940ALGNS3_FIXPT              0x00800000
+#define MOD_SINGLE21_GAIN1940ALGNS3_VALUE              SIGMASTUDIOTYPE_FIXPOINT_CONVERT(1)
+#define MOD_SINGLE21_GAIN1940ALGNS3_TYPE               SIGMASTUDIOTYPE_FIXPOINT
+
+
+
+    {
+        "ID": "0x11",
+        "Name": "[Module Single11]",
+        "StartAddr": 5,
+        "Description": "输入通道1增益",
+        "ParamLength": 4,
+        "ParamData": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+	
+	{
+        "ID": "0x21",
+        "Name": "[Module Single21]",
+        "StartAddr": 6,
+        "Description": "输入通道2增益",
+        "ParamLength": 4,
+        "ParamData": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+	
+    {
+        "ID": "0x13",
+        "Name": "[Module Mute11]",
+        "StartAddr": 1,
+        "Description": "输入通道1静音",
+        "ParamLength": 4,
+        "ParamData": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+	
+    {
+        "ID": "0x23",
+        "Name": "[Module Mute21]",
+        "StartAddr": 3,
+        "Description": "输入通道2静音",
+        "ParamLength": 4,
+        "ParamData": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+	
+    {
+        "ID": "0x33",
+        "Name": "[Module Mute12]",
+        "StartAddr": 322,
+        "Description": "输出通道1静音",
+        "ParamLength": 4,
+        "ParamData": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+	
+    {
+        "ID": "0x43",
+        "Name": "[Module Mute22]",
+        "StartAddr": 324,
+        "Description": "输出通道2静音",
+        "ParamLength": 4,
+        "ParamData": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+	
+    {
+        "ID": "0x53",
+        "Name": "[Module Mute32]",
+        "StartAddr": 326,
+        "Description": "输出通道3静音",
+        "ParamLength": 4,
+        "ParamData": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
