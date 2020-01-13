@@ -21,7 +21,7 @@ static void ClockInit() {
 
     //配置使能外设时钟
     CLK_PeripheralClockConfig(CLK_PERIPHERAL_I2C, ENABLE);
-    CLK_PeripheralClockConfig(CLK_PERIPHERAL_UART2, ENABLE);
+    CLK_PeripheralClockConfig(CLK_PERIPHERAL_UART3, ENABLE);
     CLK_PeripheralClockConfig(CLK_PERIPHERAL_TIMER1, ENABLE);
     CLK_PeripheralClockConfig(CLK_PERIPHERAL_TIMER2, ENABLE);
     CLK_PeripheralClockConfig(CLK_PERIPHERAL_TIMER3, ENABLE);

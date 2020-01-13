@@ -33,6 +33,7 @@ extern "C" {
 }
 #include "Driver/St/Gpio.h"
 #include "Driver/St/Sys.h"
+#include "Driver/St/Uart.h"
 #include "Driver/Chip/Eeprom.h"
 #include "Driver/Chip/Oled.h"
 #include "Driver/Chip/Key.h"
@@ -52,6 +53,9 @@ const uint16_t EepronPages = 512;
          512Page
          64Byte per Page     
 */
+
+GpioParam GpioUartRxParam(GPIOD, GPIO_PIN_6, GPIO_MODE_IN_FL_NO_IT, false);
+GpioParam GpioUartTxParam(GPIOD, GPIO_PIN_5, GPIO_MODE_OUT_PP_LOW_FAST, false);
 
 GpioParam GpioLed01Param(GPIOC, GPIO_PIN_4, GPIO_MODE_OUT_PP_LOW_FAST, false);
 GpioParam GpioLed02Param(GPIOC, GPIO_PIN_3, GPIO_MODE_OUT_PP_LOW_FAST, false);
@@ -97,8 +101,12 @@ void main(void)
 {
 	Sys::CpuInit();
 
-	enableInterrupts();
-
+	Gpio *uartRx_ =  new Gpio(GpioUartRxParam);
+	uartRx_->Init();
+	
+	Gpio *uartTx_ =  new Gpio(GpioUartTxParam);
+	uartTx_->Init();
+	
 	Gpio *led01_ =  new Gpio(GpioLed01Param);
 	led01_->Init();
 
@@ -108,19 +116,19 @@ void main(void)
 	Gpio *led03_ = new Gpio(GpioLed03Param);
 	led03_->Init();
 
-	Oled *oled = new Oled(OledSpdParam);
-	oled->Init();
-	#if 1 
 	Eeprom *eeprom = new Eeprom(EepronAddress, true, EepronPageSize, EepronPageSize * EepronPages);
-
-	eeprom->Test();
-	#endif
 
 	Key *encKey = new Key(GpioEcKeyIoParam, 2000);
 	KeyPressType encKeyType = KeyPressType_None;
 	RotaryEncoder *enc = new RotaryEncoder(GpioEcAIoParam, GpioEcBIoParam);
 	RotaryEncoderType encType = RotaryEncoder_None;
 
+	Uart *uart = new Uart(115200);
+	
+	enableInterrupts();
+	
+	Oled *oled = new Oled(OledSpdParam);
+	oled->Init();
 
 	//Item *rootItem = new RootItem(NULL, "ROOT");
 	//ShowSon(rootItem, oled);
@@ -128,8 +136,13 @@ void main(void)
 	menu->ShowSubItems();
 	menu->ShowSymbol();
 	
+	//eeprom->Test();
 	/* Infinite loop */
 	Sys::BeepRingForMs(100);
+	
+	uint8_t uartSendBuf[] = {0x0f, 0x0f, 0x03, 0x0f, 0x0f, 0x03, 0x0f, 0x0f, 0x03, 0x0f, 0x0f, 0x03};
+	uint32_t TestTime = Sys::GetTimeMs();
+	
 	while (1)
 	{
 #if 0    
@@ -147,6 +160,12 @@ void main(void)
 		if (encType != RotaryEncoder_None) {
 			menu->Rolling(encType);
 		}
+		
+		if ((Sys::GetTimeMs() - TestTime) > 5000) {
+		  	TestTime = Sys::GetTimeMs();
+			uart->SendData(uartSendBuf, sizeof(uartSendBuf));
+		}
+		
 	}
 }
 
