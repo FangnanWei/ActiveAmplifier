@@ -2,24 +2,24 @@
 
 
 const uint32_t TimeCounterPeriod = HSE_VALUE/1000;
-const uint32_t I2cSpeed = 200000;//100K, EEPROMÕı³£×î¸ßÅÜ2.5K£¬¹ı¸ß½«³ö´í
+const uint32_t I2cSpeed = 200000;//100K, EEPROMæ­£å¸¸æœ€é«˜è·‘2.5Kï¼Œè¿‡é«˜å°†å‡ºé”™
 const uint16_t I2cOwnAddress = 0xA0;
 
 static void ClockInit() { 
     CLK_DeInit();
     
-    //Ê¹ÄÜÍâ²¿Ê±ÖÓ
+    //ä½¿èƒ½å¤–éƒ¨æ—¶é’Ÿ
     CLK_HSECmd(ENABLE);
     
-    //ÄÚ²¿Ê±ÖÓ·ÖÆµÉèÖÃÎª1
+    //å†…éƒ¨æ—¶é’Ÿåˆ†é¢‘è®¾ç½®ä¸º1
     /* Configure the Fcpu to DIV1*/
     CLK_SYSCLKConfig(CLK_PRESCALER_CPUDIV1);
     
-    //ÇĞ»»Ê±ÖÓÔ´µ½HSE
+    //åˆ‡æ¢æ—¶é’Ÿæºåˆ°HSE
     /* Configure the system clock to use HSE clock source and to run at 24Mhz */
     CLK_ClockSwitchConfig(CLK_SWITCHMODE_AUTO, CLK_SOURCE_HSE, DISABLE, CLK_CURRENTCLOCKSTATE_DISABLE);
 
-    //ÅäÖÃÊ¹ÄÜÍâÉèÊ±ÖÓ
+    //é…ç½®ä½¿èƒ½å¤–è®¾æ—¶é’Ÿ
     CLK_PeripheralClockConfig(CLK_PERIPHERAL_I2C, ENABLE);
     CLK_PeripheralClockConfig(CLK_PERIPHERAL_UART3, ENABLE);
     CLK_PeripheralClockConfig(CLK_PERIPHERAL_TIMER1, ENABLE);
@@ -50,16 +50,16 @@ static void I2cCtrlerInit() {
 }
 
 void Sys::CpuInit() {
-  //Ê±ÖÓ³õÊ¼»¯
+  //æ—¶é’Ÿåˆå§‹åŒ–
   ClockInit();
   
-  //·äÃùÆ÷³õÊ¼»¯
+  //èœ‚é¸£å™¨åˆå§‹åŒ–
   BeepInit();
   
-  //¼ÆÊı¶¨Ê±Æ÷³õÊ¼»¯
+  //è®¡æ•°å®šæ—¶å™¨åˆå§‹åŒ–
   TimeCounterInit();
   
-  //³õÊ¼»¯i2c¿ØÖÆÆ÷
+  //åˆå§‹åŒ–i2cæ§åˆ¶å™¨
   I2cCtrlerInit();
 }
 

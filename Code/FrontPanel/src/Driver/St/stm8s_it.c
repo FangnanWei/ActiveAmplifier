@@ -39,6 +39,9 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 uint32_t TimeCounterCnt = 0;
+
+ComFifo_t g_ComFifo;
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 uint32_t TimeCounterCntGet(void) 
@@ -312,7 +315,7 @@ INTERRUPT_HANDLER(TIM1_CAP_COM_IRQHandler, 12)
      it is recommended to set a breakpoint on the following instruction.
   */
    TimeCounterCnt++;
-   //һ��Ҫ����жϱ�־λ
+   //一定要清除中断标志位
    TIM3_ClearITPendingBit(TIM3_IT_UPDATE);
  }
 
@@ -453,13 +456,16 @@ INTERRUPT_HANDLER(I2C_IRQHandler, 19)
   * @param  None
   * @retval None
   */
+ static uint8_t UartRxData = 0;
  INTERRUPT_HANDLER(UART3_RX_IRQHandler, 21)
  {
     /* In order to detect unexpected events during development,
        it is recommended to set a breakpoint on the following instruction.
     */
-    //��ȡ���ݼ�����жϱ�־λ
-   	UART3_ReceiveData8();
+  //只做取数据任务，将数据存储到数组当中，之后的操作有其它任务进行处理
+  UartRxData = UART3_ReceiveData8();
+  WriteComFifo(&g_ComFifo, (char *)&UartRxData, 1);
+  UART3_ClearFlag(UART3_FLAG_RXNE);
  }
 #endif /* (STM8S208) || (STM8S207) || (STM8AF52Ax) || (STM8AF62Ax) */
 

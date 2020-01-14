@@ -68,7 +68,7 @@ ErrorStatus I2c::Send(uint8_t* pBuffer, uint16_t writeAddr, uint16_t numByteToWr
         I2C_SendData(*pBuffer);
         I2CTimeout = I2C_LONG_TIMEOUT;
 
-        while(!I2C_CheckEvent( I2C_EVENT_MASTER_BYTE_TRANSMITTED))	 //可靠,速度变慢EV8_2
+        while(!I2C_CheckEvent( I2C_EVENT_MASTER_BYTE_TRANSMITTED))	 //鍙潬,閫熷害鍙樻參EV8_2
         {
             if((I2CTimeout--) == 0)
                 return I2cErrorCallback();
@@ -90,7 +90,7 @@ ErrorStatus I2c::Receive(uint8_t* pBuffer, uint16_t readAddr, uint16_t numByteTo
         if((I2CTimeout--) == 0) return I2cErrorCallback();
     }
 
-    I2C_AcknowledgeConfig(I2C_ACK_CURR);			//必须先使能一次ACK
+    I2C_AcknowledgeConfig(I2C_ACK_CURR);			//蹇呴』鍏堜娇鑳戒竴娆CK
 
     I2C_GenerateSTART( ENABLE);
     I2CTimeout = I2C_FLAG_TIMEOUT;

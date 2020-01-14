@@ -12,7 +12,7 @@ void Eeprom::Write(uint16_t startAddr, uint8_t *buf, uint16_t length)
     }
     
     first_page_size = pageSize_ - startAddr % pageSize_;
-    full_page_cnt = (length - first_page_size)/pageSize_;			//ÂúÒ³ÊıÁ¿
+    full_page_cnt = (length - first_page_size)/pageSize_;			//æ»¡é¡µæ•°é‡
     last_page_size  = (length - first_page_size) % pageSize_;
     next_page_base_addr = startAddr + first_page_size;
     last_page_base_addr = full_page_cnt * pageSize_ + next_page_base_addr;
@@ -58,7 +58,7 @@ void Eeprom::Test()
 
 	for (i = 0; i < sizeof(Tx1_Buffer); i++) {
 	if (tempBuf[i] != Tx1_Buffer[i]) {
-		while(1);//Failed£¡£¡
+		while(1);//Failedï¼ï¼
 	}
 	}
 }

@@ -128,14 +128,14 @@ int main(void)
 	{
 		//uint16_t len;
 		/* 上报处理 */
-#if 0				
+			
 		/* 接收处理      UI通信的是UART1 */
 		while (GetMcuMsg(&g_ComFifo, &msg_rx)) 
 		{
 			if(inst->msg[msg_rx.header.msgType])
 				inst->msg[msg_rx.header.msgType](inst, &msg_rx);
 		}
-
+#if 0
 		//与STM8通信的是 UART2，
 		while (GetMcuMsg(&g_ComFifo_2, &msg_rx)) 
 		{

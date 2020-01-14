@@ -42,7 +42,7 @@ public:
   void Disable();
   void DisableForMs(uint32_t ms);
   
-  //ÊäÈëÊÇ·ñ±»Ê¹ÄÜ
+  //è¾“å…¥æ˜¯å¦è¢«ä½¿èƒ½
   bool GetInState();
   
 private: 

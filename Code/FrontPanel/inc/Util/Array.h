@@ -9,7 +9,7 @@ extern "C" {
 template<class T>
 class Array {
 public:
-	// maxSize==0ÒâÎ¶×Å²»ÏÞÖÆ×î´ó³¤¶È
+	// maxSize==0æ„å‘³ç€ä¸é™åˆ¶æœ€å¤§é•¿åº¦
 	Array(int initSize, int maxSize) {
 		this->num_ = initSize;
 		this->maxSize_ = maxSize;
@@ -40,7 +40,7 @@ public:
 		return NULL;
 	}
 
-	// ·µ»ØÖµ±íÊ¾ÊÇ·ñÌí¼ÓÁËÒ»Ïî
+	// è¿”å›žå€¼è¡¨ç¤ºæ˜¯å¦æ·»åŠ äº†ä¸€é¡¹
 	T *Add(const T &ptr, int pos=-1) {
 		if (cnt_ >= num_) {
 			if (maxSize_>0 && num_ >= maxSize_)

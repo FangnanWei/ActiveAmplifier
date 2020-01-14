@@ -106,7 +106,7 @@
 #if !defined  HSE_Value
  #if defined (STM8S208) || defined (STM8S207) || defined (STM8S007) || defined (STM8AF52Ax) || \
      defined (STM8AF62Ax) || defined (STM8AF622x)
-  #define HSE_VALUE ((uint32_t)24000000) /* Value of the External oscillator in Hz*/
+  #define HSE_VALUE ((uint32_t)12288000) /* Value of the External oscillator in Hz*/
  #else
   #define HSE_VALUE ((uint32_t)12288000) /* Value of the External oscillator in Hz*/
  #endif /* STM8S208 || STM8S207 || STM8S007 || STM8AF62Ax || STM8AF52Ax || STM8AF622x */

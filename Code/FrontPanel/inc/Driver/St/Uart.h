@@ -8,6 +8,7 @@ extern "C" {
 class Uart{
 public:
 	Uart(uint32_t baudRate) {
+                //串口初始化与系统时钟有关系，如果用外部时钟，确保晶振值配置正确。更改芯片型号后，要同步检查HSE的值
 		UART3_DeInit();
 		UART3_Init(baudRate, UART3_WORDLENGTH_8D, UART3_STOPBITS_1, UART3_PARITY_NO, UART3_MODE_TXRX_ENABLE);
 		UART3_ITConfig(UART3_IT_RXNE_OR, ENABLE);

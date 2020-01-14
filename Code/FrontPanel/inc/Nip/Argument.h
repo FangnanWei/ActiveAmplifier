@@ -7,7 +7,7 @@ extern "C" {
 
 #include "Util/Array.h"
 
-// 该方法的声明应该位于类声明的私有部分
+// 璇ユ柟娉曠殑澹版槑搴旇浣嶄簬绫诲０鏄庣殑绉佹湁閮ㄥ垎
 #define DISALLOW_COPY_AND_ASSIGN(TypeName)	\
 private: \
     TypeName(const TypeName &);				\

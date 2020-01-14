@@ -16,7 +16,7 @@ Argument::Argument(BranchArg *parent, const char *fieldName) {
 	SetFieldName(fieldName);
 
 	if (parent!=NULL)
-		parent->AddSon(this);//ÌáÊ¾NullErrorMsg¿ÉÄÜÔÚ¹¹ÔìÇ°±»Ê¹ÓÃ
+		parent->AddSon(this);//æç¤ºNullErrorMsgå¯èƒ½åœ¨æ„é€ å‰è¢«ä½¿ç”¨
 }
 
 Argument::~Argument() {

@@ -6,8 +6,8 @@ RotaryEncoderType RotaryEncoder::Scan() {
    
    RotaryEncoderType currEncType = RotaryEncoder_None;
   
-  /**  ��һ��������ȶ�״̬ ��¼�����ȶ�ʱ�ĵ�ƽ**/
-  /**  �ڶ������������״̬ �Ƚ��ȶ�״̬��ƽ������״̬���ƽ����ȡ����**/
+  /**  第一步：检测稳定状态 记录两线稳定时的电平**/
+  /**  第二步：检测跳变状态 比较稳定状态电平和跳变状态后电平，获取方向**/
   if (!stable_) {
     if (currIoAState_ == currIoBState_) {
         stable_= true;

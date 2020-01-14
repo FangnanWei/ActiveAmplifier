@@ -13,9 +13,9 @@ KeyPressType Key::Scan() {
     
     currStare_ = gpio_->GetInState();
     
-    //сп╤╞вВ ╟╢об╩Руъйм╥е
-    //йм╥е еп╤оЁ╓╤л╟╢об
-    //╟╢об ©╙й╪╪фй╠
+    //Ф°┴Е┼╗Д╫° Ф▄┴Д╦▀Ф┬√Х─┘И┤┼Ф■╬
+    //И┤┼Ф■╬ Е┬╓Ф√╜И∙©Г÷╜Ф▄┴Д╦▀
+    //Ф▄┴Д╦▀ Е╪─Е╖▀Х╝║Ф≈╤
     if (prevStare_ != currStare_) {
       if (prevStare_) {
         if ((Sys::GetTimeMs() - pressTime_) < longPressTime_) {

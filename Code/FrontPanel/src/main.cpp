@@ -30,6 +30,8 @@
 extern "C" {
 #include "stm8s.h"
 #include "stdlib.h"
+#include "Driver/St/stm8s_it.h"
+#include "App/comfifo.h"
 }
 #include "Driver/St/Gpio.h"
 #include "Driver/St/Sys.h"
@@ -46,8 +48,8 @@ const uint8_t EepronAddress = 0xA8;
 const uint16_t EepronPageSize = 64;
 const uint16_t EepronPages = 512;
 /*
-   24C256×ÊÁÏ
-   ÈİÁ¿£º32768Byte
+   24C256èµ„æ–™
+   å®¹é‡ï¼š32768Byte
          256Kbit
          32KByte
          512Page
@@ -82,7 +84,7 @@ void ShowPage(Item *rootItem, Oled *oled) {
 	}
 }
 
-//½«Ò»¸öÒ³ÃæÏÔÊ¾³öÀ´
+//å°†ä¸€ä¸ªé¡µé¢æ˜¾ç¤ºå‡ºæ¥
 void ShowSon(Item *rootItem, Oled *oled){
   
   for (uint8_t i = 0; i < rootItem->GetSize(); i++) {
@@ -118,13 +120,15 @@ void main(void)
 
 	Eeprom *eeprom = new Eeprom(EepronAddress, true, EepronPageSize, EepronPageSize * EepronPages);
 
-	Key *encKey = new Key(GpioEcKeyIoParam, 2000);
+	Key *encKey = new Key(GpioEcKeyIoParam, 1000);
 	KeyPressType encKeyType = KeyPressType_None;
 	RotaryEncoder *enc = new RotaryEncoder(GpioEcAIoParam, GpioEcBIoParam);
 	RotaryEncoderType encType = RotaryEncoder_None;
 
+
+	InitComFifo(&g_ComFifo);
+
 	Uart *uart = new Uart(115200);
-	
 	enableInterrupts();
 	
 	Oled *oled = new Oled(OledSpdParam);
@@ -138,7 +142,7 @@ void main(void)
 	
 	//eeprom->Test();
 	/* Infinite loop */
-	Sys::BeepRingForMs(100);
+	//Sys::BeepRingForMs(100);
 	
 	uint8_t uartSendBuf[] = {0x0f, 0x0f, 0x03, 0x0f, 0x0f, 0x03, 0x0f, 0x0f, 0x03, 0x0f, 0x0f, 0x03};
 	uint32_t TestTime = Sys::GetTimeMs();

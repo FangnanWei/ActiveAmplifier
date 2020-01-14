@@ -2158,6 +2158,9 @@
         <group>
             <name>App</name>
             <file>
+                <name>$PROJ_DIR$\..\inc\App\comfifo.h</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\inc\App\Menu.h</name>
             </file>
         </group>
@@ -2217,6 +2220,9 @@
         <name>src</name>
         <group>
             <name>App</name>
+            <file>
+                <name>$PROJ_DIR$\..\src\App\comfifo.c</name>
+            </file>
             <file>
                 <name>$PROJ_DIR$\..\src\App\Menu.cpp</name>
             </file>

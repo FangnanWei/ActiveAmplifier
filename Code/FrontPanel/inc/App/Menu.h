@@ -21,7 +21,7 @@ enum ItemType
 	ItemType_IsBack		= 0x10
 };
 
-//²Ëµ¥µÄ×îĞ¡µ¥Ôª--Ò»Ïî£¬Ò»Ìõ------³éÏóÀà
+//èœå•çš„æœ€å°å•å…ƒ--ä¸€é¡¹ï¼Œä¸€æ¡------æŠ½è±¡ç±»
 class Item{
 public:
 	Item(ItemType itemType, Item *parent, const char *fieldName, int initSize);
@@ -34,6 +34,8 @@ public:
 	
 	inline Item *GetParent() { return parent_; }
   	bool AddSon(Item *son);
+	bool GetSlectStat() { return bySelect_; }
+	void SetSlectStat(bool newStat) { this->bySelect_ = newStat; }
 	inline Item *GetSon(uint8_t index) {
 		uint8_t cnt = subItems_.GetCount();
 		if (index < cnt) {
@@ -48,10 +50,11 @@ public:
 		return subItems_.GetCount();
 	}
 protected:	
-  	char	 	  *fieldName_;	//°üº¬µÄ×Ö·ûÄÚÈİ
+  	char	 	  *fieldName_;	//åŒ…å«çš„å­—ç¬¦å†…å®¹
   	Array<Item *> subItems_;
 	Item		  *parent_;
 	uint16_t	  itemType_;
+	bool 		  bySelect_;
 };
 
 class BackItem : public Item{
@@ -63,7 +66,7 @@ public:
 	virtual void Turning(){}
 };
 
-//²Ëµ¥½çÃæ(home/ParemSetting/OutputMode)
+//èœå•ç•Œé¢(home/ParemSetting/OutputMode)
 class OutputModeSTR4RItem : public Item{
 public:
   	OutputModeSTR4RItem(Item *parent, const char *fieldName):
@@ -97,7 +100,7 @@ public:
 	virtual void Turning(){}
 };
 
-//²Ëµ¥½çÃæ(home/ParemSetting/InputSelect)
+//èœå•ç•Œé¢(home/ParemSetting/InputSelect)
 class InputSelectAnalogItem : public Item{
 public:
   	InputSelectAnalogItem(Item *parent, const char *fieldName):
@@ -132,7 +135,7 @@ public:
 	virtual void Turning(){}
 };
 
-//²Ëµ¥½çÃæ(home/ParemSetting/InputGain)
+//èœå•ç•Œé¢(home/ParemSetting/InputGain)
 class InputGainPlus6dBItem : public Item{
 public:
   	InputGainPlus6dBItem(Item *parent, const char *fieldName):
@@ -179,7 +182,7 @@ public:
 	virtual void Turning(){}
 };
 
-//²Ëµ¥½çÃæ(home/ParemSetting/DSP)
+//èœå•ç•Œé¢(home/ParemSetting/DSP)
 class DSPBypassItem : public Item{
 public:
   	DSPBypassItem(Item *parent, const char *fieldName):
@@ -249,7 +252,7 @@ public:
 };
 
 
-//²Ëµ¥½çÃæ(home/Display)
+//èœå•ç•Œé¢(home/Display)
 class DisplayCHAItem : public Item{
 public:
   	DisplayCHAItem(Item *parent, const char *fieldName):
@@ -297,9 +300,9 @@ public:
 };
 
 
-//²Ëµ¥½çÃæ(home/SystemSetup)
+//èœå•ç•Œé¢(home/SystemSetup)
 
-//²Ëµ¥½çÃæ(home/SystemSetup/SystemInfo)
+//èœå•ç•Œé¢(home/SystemSetup/SystemInfo)
 class SystemInfoVersionItem : public Item{
 public:
   	SystemInfoVersionItem(Item *parent, const char *fieldName):
@@ -323,7 +326,7 @@ public:
 	virtual void Turning(){}
 };
 
-//²Ëµ¥½çÃæ(home/SystemSetup/OLEDContrast)
+//èœå•ç•Œé¢(home/SystemSetup/OLEDContrast)
 class OLEDContrastConstrastItem : public Item{
 public:
   	OLEDContrastConstrastItem(Item *parent, const char *fieldName):
@@ -347,7 +350,7 @@ public:
 	virtual void Turning(){}
 };
 
-//²Ëµ¥½çÃæ(home/SystemSetup/IPConfig)
+//èœå•ç•Œé¢(home/SystemSetup/IPConfig)
 class IPConfigDHCPItem : public Item{
 public:
   	IPConfigDHCPItem(Item *parent, const char *fieldName):
@@ -357,7 +360,7 @@ public:
 	virtual void Turning(){}
 };
 
-//²Ëµ¥½çÃæ(home/SystemSetup/IPConfig/IP)
+//èœå•ç•Œé¢(home/SystemSetup/IPConfig/IP)
 class IPIPItem : public Item{
 public:
   	IPIPItem(Item *parent, const char *fieldName):
@@ -403,7 +406,7 @@ public:
 	virtual void Turning(){}
 };
 
-//²Ëµ¥½çÃæ(home/SystemSetup/IPConfig/DNS)
+//èœå•ç•Œé¢(home/SystemSetup/IPConfig/DNS)
 class DNSAutoItem : public Item{
 public:
   	DNSAutoItem(Item *parent, const char *fieldName):
@@ -485,7 +488,7 @@ public:
 	virtual void Turning(){}
 };
 
-//²Ëµ¥½çÃæ(root:)
+//èœå•ç•Œé¢(root:)
 class RootItem : public Item{
 public:
   	ParemSettingItem paremSettingItem_;
@@ -504,6 +507,57 @@ public:
 	virtual void Turning(){}
 };
 
+class HomeGainTempItem : public Item{
+public:
+  	HomeGainTempItem(Item *parent, const char *fieldName):
+	  Item(ItemType_Writable, parent, fieldName, 0){
+	  }
+  	virtual void ShortPress(){}
+	virtual void Turning(){}
+};
+
+class HomeChanItem : public Item{
+public:
+  	HomeChanItem(Item *parent, const char *fieldName):
+	  Item(ItemType_Writable, parent, fieldName, 0){
+	  }
+  	virtual void ShortPress(){ bySelect_ = !bySelect_; }
+	virtual void Turning(){}
+};
+
+
+class HomeIpItem : public Item{
+public:
+  	HomeIpItem(Item *parent, const char *fieldName):
+	  Item(ItemType_Writable, parent, fieldName, 0){
+	  }
+  	virtual void ShortPress(){}
+	virtual void Turning(){}
+};
+
+
+class HomeItem : public Item{
+public:
+  	HomeGainTempItem homeGainTempItem_;
+  	HomeChanItem     homeChanAItem_;
+	HomeChanItem     homeChanBItem_;
+  	HomeIpItem	     homeIpItem_;
+	
+  	HomeItem(Item *parent, const char *fieldName) : 
+	  Item(ItemType_IsBranch, parent, fieldName, 4),
+	  homeGainTempItem_(this, "Gain:+6dB Tmp:32^"),
+	  homeChanAItem_(this, "CHA & & & & & & & &"),
+	  homeChanBItem_(this, "CHB & & & & & & & &"),
+	  homeIpItem_(this, "IP:192.168.000.001"){
+	  
+	  }
+  
+    virtual void ShortPress(){}
+	virtual void Turning(){}
+};
+
+
+
 class Menu{
 public:
   	static const uint8_t MaxLineCnt = 4;
@@ -511,10 +565,14 @@ public:
 	Menu(Oled *oled){
 	  	oled_ = oled;
 		rootItem_ = new RootItem(NULL, "ROOT");
+		homeItem_ = new HomeItem(NULL, "HOME");
 		
-		currItem_ = rootItem_;
+		currItem_ = homeItem_;
 		subItemCnt_ = currItem_->GetSize();
 		
+		ResetLevel();
+	}
+	void ResetLevel() {
 		level_ = 0;
 		
 		firstLineIndex_[level_] = 0;
@@ -524,21 +582,28 @@ public:
 	void ShowSymbol();
 	void ClearSymbol();
 	
-	void Rolling(RotaryEncoderType encType);   //½ÓÊÕ±àÂëÆ÷ÊäÈë--¸Ä±äÏÔÊ¾¡£
+	void Rolling(RotaryEncoderType encType);   //æ¥æ”¶ç¼–ç å™¨è¾“å…¥--æ”¹å˜æ˜¾ç¤ºã€‚
 	void Press(KeyPressType keyType);
 	
   
 private:
+	void LongPressDeal();
+	void ShortPressDeal();
+
+	void PageRolling(RotaryEncoderType encType);
+	void ItemRolling(RotaryEncoderType encType);
+	
   	Oled 	 *oled_;
 	RootItem *rootItem_;
+	HomeItem *homeItem_;
 	
 	Item     *currItem_;
 	uint8_t  subItemCnt_;
 	
-	//²Ëµ¥×´Ì¬²ÎÊı
+	//èœå•çŠ¶æ€å‚æ•°
 	uint8_t  level_;
-	uint8_t  focusLine_[MaxLevelDeepth_];	  //µ±Ç°ÏÔÊ¾µÄĞĞºÅ
-	uint8_t  firstLineIndex_[MaxLevelDeepth_];//µÚÒ»ĞĞµÄ²Ëµ¥Ïî±àºÅ¡£Èç¹û¸ÃÖµ²»±ä£¬Ôò²»ĞèÒªÈ«ÆÁË¢ĞÂ£¬Ö»ĞèÒª¸üĞÂ Æì±ê
+	uint8_t  focusLine_[MaxLevelDeepth_];	  //å½“å‰æ˜¾ç¤ºçš„è¡Œå·
+	uint8_t  firstLineIndex_[MaxLevelDeepth_];//ç¬¬ä¸€è¡Œçš„èœå•é¡¹ç¼–å·ã€‚å¦‚æœè¯¥å€¼ä¸å˜ï¼Œåˆ™ä¸éœ€è¦å…¨å±åˆ·æ–°ï¼Œåªéœ€è¦æ›´æ–° æ——æ ‡
 };
 
 #endif

@@ -31,14 +31,16 @@ public:
     void Clear();
     //void DrawPoint(uint8_t x,uint8_t y,uint8_t t);
     //void Fill(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, uint8_t dot);
-    void ShowChar(uint8_t x, uint8_t y, uint8_t chr);
+    void ShowChar(uint8_t x, uint8_t y, uint8_t chr, bool in8by16);
     void ShowNum(uint8_t x, uint8_t y,uint32_t num, uint8_t len, uint8_t size2);
     void ShowString(uint8_t x, uint8_t y, const uint8_t *chr);
     void SetPos(uint8_t x, uint8_t y);
     //void ShowCHinese(uint8_t x, uint8_t y, uint8_t no);
     void DrawBMP(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, const uint8_t BMP[]);
+	void ClearArea(uint8_t xStart, uint8_t yStart, uint8_t xSize, uint8_t ySize);
   
 private:
+    bool Is6_8Chr(uint8_t chr);
     enum LcdOp{
         oldeOp_Cmd      = 0x00,
         oledOp_Data     = 0x40,
